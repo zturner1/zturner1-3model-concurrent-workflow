@@ -1,45 +1,71 @@
-# 3-Model Concurrent AI Workflow
+# 🤖 3-Model Concurrent AI Workflow
 
-Run Claude, Gemini, and OpenAI simultaneously on the same project. Context persists across sessions. Your files are the source of truth.
+<div align="center">
 
-## The Problem
+![Version](https://img.shields.io/badge/version-1.0-blue.svg)
+![Status](https://img.shields.io/badge/status-untested-yellow.svg)
+![License](https://img.shields.io/badge/license-CC%20BY--NC%204.0-green.svg)
+![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)
 
-Browser-based AI workflows scatter your work across chats, tabs, and documents. Context breaks. Projects fragment. You lose control.
+**Run Claude, Gemini, and OpenAI simultaneously on the same project.**
 
-## The Solution
+*Context persists. Files are truth. You own everything.*
 
-Terminal-based AI that lives **inside** your project folder:
+[Quick Start](#-quick-start) • [Architecture](#-architecture) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
-- **3 AI tools running concurrently**, each with its specialty
-- **Persistent context files** that survive sessions
-- **Shared output directories** so all tools contribute to the same project
-- **You own everything** — version with Git, back up, switch providers anytime
+</div>
 
-## Architecture
+---
+
+## 🎯 The Problem
+
+Browser-based AI workflows are **broken**:
+
+- 😫 Context breaks mid-conversation
+- 📋 Copy-paste between tabs
+- 🗂️ Work scattered across chats
+- 🔒 Vendor lock-in
+
+## ✨ The Solution
+
+Terminal-based AI that lives **inside** your project:
+
+- 🚀 **3 AI tools running concurrently** — each with its specialty
+- 💾 **Persistent context files** — survive sessions, travel with your project
+- 📁 **Shared directories** — all tools contribute to the same outputs
+- 🔓 **You own everything** — Git versioned, portable, provider-agnostic
+
+---
+
+## 🏗️ Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        PROJECT FOLDER                            │
+│                     📂 PROJECT FOLDER                           │
 ├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
 │  ┌──────────┐    ┌──────────┐    ┌──────────┐                  │
-│  │ CLAUDE.md│    │GEMINI.md │    │OPENAI.md │   Context Files  │
+│  │🟣 CLAUDE │    │🔵 GEMINI │    │🟢 OPENAI │   Context Files  │
 │  └────┬─────┘    └────┬─────┘    └────┬─────┘                  │
 │       │               │               │                         │
-│       ▼               ▼               ▼                         │
-│  ┌─────────────────────────────────────────┐                   │
-│  │          shared-context.md              │   Sync Layer      │
-│  └─────────────────────────────────────────┘                   │
+│       └───────────────┼───────────────┘                        │
+│                       ▼                                         │
+│            ┌─────────────────────┐                             │
+│            │ 🔄 shared-context   │          Sync Layer         │
+│            └─────────────────────┘                             │
+│                       │                                         │
 │       ┌───────────────┼───────────────┐                        │
 │       ▼               ▼               ▼                         │
 │  ┌─────────┐    ┌──────────┐    ┌──────────┐                   │
-│  │research/│    │ drafts/  │    │ output/  │   Shared Output   │
+│  │📚research│   │ 📝drafts │    │ 📦output │   Shared Output   │
 │  └─────────┘    └──────────┘    └──────────┘                   │
+│                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-        │                     │                     │
+                              │
+        ┌─────────────────────┼─────────────────────┐
         ▼                     ▼                     ▼
   ┌───────────┐        ┌───────────┐        ┌───────────┐
-  │  Claude   │        │  Gemini   │        │  OpenAI   │
-  │   Code    │        │   CLI     │        │   CLI     │
+  │  🟣 Claude │       │  🔵 Gemini │       │  🟢 OpenAI │
   ├───────────┤        ├───────────┤        ├───────────┤
   │ • Agents  │        │ • Web     │        │ • Code    │
   │ • Files   │        │   Search  │        │   Review  │
@@ -47,15 +73,27 @@ Terminal-based AI that lives **inside** your project folder:
   └───────────┘        └───────────┘        └───────────┘
 ```
 
-## Quick Start
+---
+
+## 🛠️ Tool Roles
+
+| Tool | Role | Best For |
+|:-----|:-----|:---------|
+| 🟣 **Claude Code** | Deep Work | Agents, complex tasks, file operations |
+| 🔵 **Gemini CLI** | Research | Web search, exploration, fact-finding |
+| 🟢 **OpenAI CLI** | Analysis | Code review, reasoning, evaluation |
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) v18+
-- Git
-- Accounts: Anthropic, Google, OpenAI
+- 📦 [Node.js](https://nodejs.org) v18+
+- 🔧 Git
+- 🔑 Accounts: Anthropic, Google, OpenAI
 
-### Install
+### Installation
 
 ```bash
 # Clone the repo
@@ -66,69 +104,111 @@ cd zturner1-3model-concurrent-workflow
 install.bat
 ```
 
-### Authenticate
+### Authentication
 
 ```bash
-claude      # Follow browser login
-gemini      # Authenticate with Google
-# Set OPENAI_API_KEY environment variable
+claude      # 🟣 Follow browser login
+gemini      # 🔵 Authenticate with Google
+# 🟢 Set OPENAI_API_KEY environment variable
 ```
 
-### Run
+### Launch
 
 ```bash
 run.bat
-
-# Select:
-# [1] Claude Code  - Deep work, agents
-# [2] Gemini CLI   - Research, web search
-# [3] OpenAI CLI   - Analysis, code review
-# [4] All Three    - Launch all concurrently
 ```
 
-## Tool Roles
+```
+========================================
+ 🤖 Terminal AI Workflow - 3 Model System
+========================================
 
-| Tool | Primary Use | Strengths |
-|------|-------------|-----------|
-| **Claude Code** | Complex tasks, agents | Extended context, multi-agent, file operations |
-| **Gemini CLI** | Research, exploration | Web search, generous free tier |
-| **OpenAI CLI** | Analysis, code review | Strong reasoning, code understanding |
+ [1] 🟣 Claude Code  - Deep work, agents
+ [2] 🔵 Gemini CLI   - Research, web search
+ [3] 🟢 OpenAI CLI   - Analysis, code review
+ [4] 🚀 All Three    - Launch all concurrently
+ [5] Exit
+```
 
-## Project Structure
+---
+
+## 📁 Project Structure
 
 ```
 project/
-├── CLAUDE.md              # Claude context (auto-loads)
-├── GEMINI.md              # Gemini context (auto-loads)
-├── OPENAI.md              # OpenAI context (auto-loads)
-├── shared-context.md      # Cross-tool sync
-├── .styles/               # Output style definitions
-├── research/              # Research outputs
-├── drafts/                # Work in progress
-├── output/                # Final deliverables
-├── scripts/               # Automation
-└── docs/                  # Documentation
+├── 🟣 CLAUDE.md           # Claude context (auto-loads)
+├── 🔵 GEMINI.md           # Gemini context (auto-loads)
+├── 🟢 OPENAI.md           # OpenAI context (auto-loads)
+├── 🔄 shared-context.md   # Cross-tool sync
+├── 🎨 .styles/            # Output style definitions
+├── 📚 research/           # Research outputs
+├── 📝 drafts/             # Work in progress
+├── 📦 output/             # Final deliverables
+├── ⚙️ scripts/            # Automation
+└── 📖 docs/               # Documentation
 ```
 
-## Documentation
+---
 
-- [Full Architecture](architecture_layout.md) — Complete system documentation
-- [Philosophy](docs/philosophy.md) — Why terminal AI changes everything
-- [Workflow Diagrams](docs/diagram.md) — Visual system architecture
-- [Requirements](requirements.md) — Setup and prerequisites
+## 📖 Documentation
 
-## How It Works
+| Doc | Description |
+|:----|:------------|
+| 📐 [Architecture](architecture_layout.md) | Complete system documentation |
+| 💡 [Philosophy](docs/philosophy.md) | Why terminal AI changes everything |
+| 📊 [Diagrams](docs/diagram.md) | Visual workflow diagrams |
+| 📋 [Requirements](requirements.md) | Setup and prerequisites |
 
-1. **Context files persist** — Each tool reads its context file on startup
+---
+
+## 🔄 How It Works
+
+```mermaid
+graph LR
+    A[🚀 run.bat] --> B[Launch 3 Tools]
+    B --> C[🟣 Claude]
+    B --> D[🔵 Gemini]
+    B --> E[🟢 OpenAI]
+    C --> F[📁 Project Files]
+    D --> F
+    E --> F
+    F --> G[🔄 shared-context.md]
+    G --> C
+    G --> D
+    G --> E
+```
+
+1. **Context files persist** — Each tool reads its context on startup
 2. **Shared sync** — `shared-context.md` keeps all tools aligned
 3. **Parallel work** — Use each tool for what it does best
 4. **File-based output** — All work goes to project directories
 5. **Git versioning** — Full history of your project and context
 
-## Contributing
+---
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+## 🤝 Contributing
 
-## License
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-[CC BY-NC 4.0](LICENSE) - Free to use and modify, but **no commercial use without permission**.
+### Ways to Help
+
+- 🐛 Report bugs
+- 💡 Suggest features
+- 📝 Improve documentation
+- 🔧 Add Linux/macOS scripts
+
+---
+
+## 📄 License
+
+[CC BY-NC 4.0](LICENSE) — Free to use and modify, but **no commercial use without permission**.
+
+---
+
+<div align="center">
+
+**Built for developers who want AI to work *with* their projects, not around them.**
+
+⭐ Star this repo if you find it useful!
+
+</div>
