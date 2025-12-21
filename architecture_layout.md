@@ -1,6 +1,6 @@
 # Personal AI Workflow Architecture
 
-A comprehensive architecture for terminal-based AI-assisted workflows, enabling persistent context, multi-agent collaboration, and tool-agnostic project management.
+A comprehensive architecture for terminal-based AI-assisted workflows, enabling persistent context, multi-agent collaboration, and **3-model concurrent operation**.
 
 ---
 
@@ -10,8 +10,19 @@ Traditional browser-based AI workflows fragment your work across chats, tabs, an
 
 - **File-based ownership**: Everything lives in files you control
 - **Persistent context**: AI remembers your project across sessions
+- **3-Model Concurrent**: Run Claude, Gemini, and OpenAI simultaneously
 - **Tool-agnostic**: Switch between AI tools without losing state
 - **Scalable**: From simple notes to complex multi-agent workflows
+
+## 3-Model Architecture Overview
+
+| Tool | Primary Role | Strengths |
+|------|--------------|-----------|
+| Claude Code | Deep work, agents, complex tasks | Extended context, multi-agent, file ops |
+| Gemini CLI | Research, exploration | Web search, generous free tier |
+| OpenAI CLI | High-level analysis, code review | Strong reasoning, code understanding |
+
+All three tools operate on the same project folder, share context via `shared-context.md`, and write outputs to common directories.
 
 ---
 
@@ -19,9 +30,10 @@ Traditional browser-based AI workflows fragment your work across chats, tabs, an
 
 ```
 project/
-├── CLAUDE.md                    # Claude Code persistent context (root for auto-load)
-├── GEMINI.md                    # Gemini CLI persistent context (root for auto-load)
-├── shared-context.md            # Cross-tool shared state
+├── CLAUDE.md                    # Claude Code context (auto-loads)
+├── GEMINI.md                    # Gemini CLI context (auto-loads)
+├── OPENAI.md                    # OpenAI CLI context (auto-loads)
+├── shared-context.md            # Cross-tool sync (all 3 tools read this)
 │
 ├── .styles/                     # Output style definitions
 │   ├── research.md              # Research synthesis style
@@ -59,7 +71,8 @@ project/
 
 | Directory | Purpose | When to Use |
 |-----------|---------|-------------|
-| `CLAUDE.md` / `GEMINI.md` | AI memory (root level) | Automatically loaded by AI tools on startup |
+| `CLAUDE.md` / `GEMINI.md` / `OPENAI.md` | AI memory (root level) | Auto-loaded by each tool on startup |
+| `shared-context.md` | Cross-tool sync | Read at start, update at end of each session |
 | `.styles/` | Output style definitions | Switch writing modes |
 | `research/` | Information gathering | New topics, fact-finding, source collection |
 | `drafts/` | Work in progress | Active writing and iteration |
@@ -156,6 +169,11 @@ This visibility helps you know when to:
 ```markdown
 # Project: [Project Name]
 
+## Role in 3-Model System
+- Claude Code: Deep work, agents, complex tasks
+- Gemini CLI (this): Research, exploration, web search
+- OpenAI CLI: High-level analysis, code review
+
 ## Research Focus
 [What topics need investigation]
 
@@ -174,6 +192,33 @@ This visibility helps you know when to:
 - [YYYY-MM-DD]: Searched [topic], found [key insight]
 ```
 
+### OPENAI.md Template
+
+```markdown
+# Project: [Project Name]
+
+## Role in 3-Model System
+- Claude Code: Deep work, agents, complex tasks
+- Gemini CLI: Research, exploration, web search
+- OpenAI CLI (this): High-level analysis, code review
+
+## Analysis Focus
+[What needs analysis or review]
+
+## Pending Reviews
+- `path/to/file` - [What to review]
+
+## Completed Analysis
+- `research/summaries/analysis.md` - [Brief summary]
+
+## Code Review Queue
+1. [File or feature to review]
+2. [Another review task]
+
+## Insights
+- [YYYY-MM-DD]: [Key insight from analysis]
+```
+
 ### shared-context.md Template (Cross-Tool Sync)
 
 ```markdown
@@ -181,6 +226,14 @@ This visibility helps you know when to:
 
 Last updated: [YYYY-MM-DD HH:MM]
 Updated by: [Tool name]
+
+## 3-Model Architecture
+
+| Tool | Role | Context File |
+|------|------|--------------|
+| Claude Code | Deep work, agents, complex tasks | CLAUDE.md |
+| Gemini CLI | Research, exploration, web search | GEMINI.md |
+| OpenAI CLI | High-level analysis, code review | OPENAI.md |
 
 ## Project State
 - **Phase**: [Planning/Research/Drafting/Review/Complete]
@@ -530,18 +583,37 @@ git commit -m "[output] Finalize and publish architecture guide"
 
 ---
 
-## 6. Tool Interoperability
+## 6. Tool Interoperability (3-Model System)
 
-Use multiple AI tools together, each with its strengths.
+Run all three AI tools concurrently, each handling its specialty.
 
 ### Tool Selection Guide
 
-| Tool | Best For | Strengths |
-|------|----------|-----------|
-| Claude Code | Complex tasks, code, long documents | Agents, extended context, file operations |
-| Gemini CLI | Research, exploration | Free tier, web search, quick queries |
-| Codex CLI | High-level analysis, code review | Strong reasoning, code understanding |
-| Other CLI tools | Specialized tasks | Tool-specific capabilities |
+| Tool | Best For | Context File | Strengths |
+|------|----------|--------------|-----------|
+| Claude Code | Complex tasks, agents | CLAUDE.md | Extended context, multi-agent, file ops |
+| Gemini CLI | Research, exploration | GEMINI.md | Web search, generous free tier |
+| OpenAI CLI | Analysis, code review | OPENAI.md | Strong reasoning, code understanding |
+
+### When to Use Each Tool
+
+**Claude Code:**
+- Multi-step complex tasks
+- Spawning agents for parallel work
+- File creation and editing
+- Project-wide refactoring
+
+**Gemini CLI:**
+- Web research and fact-finding
+- Exploring new topics
+- Quick queries and exploration
+- Compiling sources
+
+**OpenAI CLI:**
+- Code review and analysis
+- Architecture evaluation
+- Trade-off analysis
+- High-level reasoning tasks
 
 **Note:** Agents can use web search via different models, allowing you to leverage each tool's strengths for specific subtasks.
 
@@ -652,7 +724,7 @@ Add to context file at session end:
 - Push regularly: `git push origin main`
 
 **Critical Assets:**
-- Context files (`CLAUDE.md`, `GEMINI.md`, `shared-context.md`)
+- Context files (`CLAUDE.md`, `GEMINI.md`, `OPENAI.md`, `shared-context.md`)
 - Research summaries (`research/summaries/`)
 - Final outputs (`output/`)
 
@@ -694,25 +766,10 @@ mkdir my-project && cd my-project
 # 2. Create structure
 mkdir -p .styles research/{sources,summaries,raw} \
          drafts/{v1,v2,feedback} output/{published,internal} \
-         scripts/{prompts,tools} logs/decisions archive
+         scripts/{prompts,tools} logs/decisions archive .private
 
-# 3. Create initial context
-cat > CLAUDE.md << 'EOF'
-# Project: My Project
-
-## Overview
-[Describe your project]
-
-## Current Status
-- **Active**: Getting started
-- **Next**: [First task]
-
-## Key Decisions
-(None yet)
-
-## Conventions
-(Define as you go)
-EOF
+# 3. Create context files for all 3 tools
+# (Or copy from a template project)
 
 # 4. Initialize git
 git init
@@ -721,19 +778,22 @@ echo ".private/" >> .gitignore
 git add .
 git commit -m "[meta] Initialize project"
 
-# 5. Start working
-claude
+# 5. Start working (all 3 tools)
+run.bat   # Select option [4] for all three
 ```
 
-### Daily Workflow
+### 3-Model Daily Workflow
 
 1. **Open terminal** in project folder
-2. **Launch AI tool** (claude, gemini)
-3. **Review context** - check where you left off
-4. **State goal** - what you want to accomplish
-5. **Work** - use agents, write to files
-6. **Update context** - record decisions and progress
-7. **Commit** - save your work
+2. **Run `run.bat`** and select option [4] to launch all three tools
+3. **Check `shared-context.md`** - see current project state
+4. **Assign tasks by tool strength:**
+   - Claude: Complex tasks, agents, file edits
+   - Gemini: Research, web search, exploration
+   - OpenAI: Analysis, code review, reasoning
+5. **Work in parallel** - each tool writes to project files
+6. **Update `shared-context.md`** when switching focus
+7. **Commit** - save your work with git
 
 ---
 
@@ -796,4 +856,4 @@ Date: YYYY-MM-DD
 
 ---
 
-*This architecture transforms AI from a chat interface into a collaborative workflow system. Your projects become the container, not the AI.*
+*This architecture transforms AI from a chat interface into a collaborative 3-model workflow system. Your projects become the container — Claude, Gemini, and OpenAI become your team.*
