@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(for dir in research/sources research/summaries research/raw drafts/v1 drafts/v2 drafts/feedback output/published output/internal scripts/prompts scripts/tools logs/decisions archive)",
+      "Bash(do touch \"$dir/.gitkeep\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []
