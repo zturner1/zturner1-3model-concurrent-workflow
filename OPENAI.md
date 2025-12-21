@@ -19,7 +19,7 @@ A personal AI-assisted workflow architecture using three concurrent AI tools. Th
 
 ## Important Files
 - `architecture_layout.md` - Full architecture documentation
-- `Knowledge.md` - Original vision/philosophy article
+- `docs/philosophy.md` - Original vision/philosophy article
 - `shared-context.md` - Cross-tool state sync (check before starting)
 - `CLAUDE.md` - Claude's context (for handoff reference)
 - `GEMINI.md` - Gemini's context (for handoff reference)

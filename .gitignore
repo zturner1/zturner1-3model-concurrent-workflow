@@ -3,6 +3,10 @@
 *~
 .DS_Store
 Thumbs.db
+nul
+
+# Claude Code local settings
+.claude/
 
 # Large research dumps (uncomment if needed)
 # research/raw/*.pdf
