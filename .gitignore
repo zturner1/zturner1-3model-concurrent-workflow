@@ -1,0 +1,20 @@
+# Temporary files
+*.tmp
+*~
+.DS_Store
+Thumbs.db
+
+# Large research dumps (uncomment if needed)
+# research/raw/*.pdf
+# research/raw/*.epub
+
+# Sensitive/private content
+.private/
+
+# Editor files
+*.swp
+.vscode/
+.idea/
+
+# OS files
+desktop.ini
