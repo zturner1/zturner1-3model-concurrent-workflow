@@ -164,21 +164,6 @@ project/
 
 ## 🔄 How It Works
 
-```mermaid
-graph LR
-    A[🚀 run.bat] --> B[Launch 3 Tools]
-    B --> C[🟣 Claude]
-    B --> D[🔵 Gemini]
-    B --> E[🟢 OpenAI]
-    C --> F[📁 Project Files]
-    D --> F
-    E --> F
-    F --> G[🔄 shared-context.md]
-    G --> C
-    G --> D
-    G --> E
-```
-
 1. **Context files persist** — Each tool reads its context on startup
 2. **Shared sync** — `shared-context.md` keeps all tools aligned
 3. **Parallel work** — Use each tool for what it does best
