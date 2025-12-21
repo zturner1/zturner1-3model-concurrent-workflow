@@ -108,10 +108,34 @@ install.bat
 ### Authentication
 
 ```bash
-claude      # 🟣 Follow browser login
-gemini      # 🔵 Authenticate with Google
-# 🟢 Set OPENAI_API_KEY environment variable
+# 🟣 Claude - Follow browser login
+claude
+
+# 🔵 Gemini - Authenticate with Google
+gemini
+
+# 🟢 OpenAI - Set API key (choose one method):
 ```
+
+**Option A: Environment Variable (recommended)**
+```bash
+# Windows (current session)
+set OPENAI_API_KEY=sk-your-key-here
+
+# Windows (permanent) - Run as Administrator
+setx OPENAI_API_KEY "sk-your-key-here"
+```
+
+**Option B: Use .env file**
+```bash
+# Copy the example file
+copy .env.example .env
+
+# Edit .env and add your key
+notepad .env
+```
+
+> 📝 Get your OpenAI API key at: https://platform.openai.com/api-keys
 
 ### Launch
 

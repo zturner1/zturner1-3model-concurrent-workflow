@@ -5,6 +5,10 @@
 Thumbs.db
 nul
 
+# Environment variables (keep .env.example)
+.env
+.env.local
+
 # Claude Code local settings
 .claude/
 
