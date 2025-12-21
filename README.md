@@ -131,4 +131,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
-[MIT](LICENSE)
+[CC BY-NC 4.0](LICENSE) - Free to use and modify, but **no commercial use without permission**.
