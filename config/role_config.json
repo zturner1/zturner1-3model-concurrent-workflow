@@ -1,0 +1,44 @@
+{
+  "roles": {
+    "deep_work": {
+      "description": "Deep work, agents, complex tasks",
+      "keywords": ["build", "create", "implement", "refactor", "write", "develop", "fix", "agent", "complex", "multi-step"],
+      "primary": "claude",
+      "fallback": ["openai"]
+    },
+    "research": {
+      "description": "Research, exploration",
+      "keywords": ["research", "search", "find", "explore", "lookup", "investigate", "discover", "learn"],
+      "primary": "gemini",
+      "fallback": ["claude", "openai"]
+    },
+    "analysis": {
+      "description": "High-level analysis, code review",
+      "keywords": ["review", "analyze", "evaluate", "compare", "assess", "critique", "audit", "examine"],
+      "primary": "openai",
+      "fallback": ["claude"]
+    }
+  },
+  "tools": {
+    "claude": {
+      "name": "Claude Code",
+      "command": "claude",
+      "context_file": "CLAUDE.md"
+    },
+    "gemini": {
+      "name": "Gemini CLI",
+      "command": "gemini",
+      "context_file": "GEMINI.md"
+    },
+    "openai": {
+      "name": "OpenAI Codex",
+      "command": "codex",
+      "context_file": "OPENAI.md"
+    }
+  },
+  "auth_status": {
+    "claude": true,
+    "gemini": false,
+    "openai": false
+  }
+}
