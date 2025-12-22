@@ -81,4 +81,4 @@ set OPENAI_API_KEY=sk-your-key-here
 1. Run `install.bat` to install all three tools
 2. Authenticate each tool (see instructions above)
 3. Run `run.bat` to launch your workflow
-4. Select option [4] to run all three concurrently
+4. Enter a multi-sentence task (e.g., "Research X. Build Y. Review Z.") to route to appropriate tools

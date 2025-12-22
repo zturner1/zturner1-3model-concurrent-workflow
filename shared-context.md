@@ -19,7 +19,7 @@ Updated by: Claude Code
 ## Active Tasks
 1. Install all three CLI tools (run install.bat)
 2. Authenticate each tool
-3. Test concurrent workflow with run.bat option [4]
+3. Test concurrent workflow with run.bat
 
 ## Recent Changes
 - 2024-12-21 (Claude): Initial project setup

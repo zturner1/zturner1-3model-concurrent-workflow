@@ -51,7 +51,7 @@ sequenceDiagram
     participant O as OpenAI CLI
     participant F as Project Files
 
-    U->>U: run.bat → Option [4]
+    U->>U: run.bat → Enter task
 
     par Launch All Three
         U->>C: Start Claude

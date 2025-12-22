@@ -145,15 +145,36 @@ run.bat
 
 ```
 ========================================
- 🤖 Terminal AI Workflow - 3 Model System
+ Terminal AI Workflow - 3 Model System
 ========================================
 
- [1] 🟣 Claude Code  - Deep work, agents
- [2] 🔵 Gemini CLI   - Research, web search
- [3] 🟢 OpenAI CLI   - Analysis, code review
- [4] 🚀 All Three    - Launch all concurrently
- [5] Exit
+ Type your task(s) and press Enter.
+ Multiple sentences are split and routed to appropriate tools.
+
+ Commands: /help, /status, /tasks, /exit
+========================================
+
+> Research AI trends. Build a summary. Review the draft.
+
+  ----------------------------------------
+  Analyzing and Routing Tasks
+  ----------------------------------------
+    gemini -> Research AI trends
+    claude -> Build a summary
+    openai -> Review the draft
+
+  ----------------------------------------
+  Launching Tools
+  ----------------------------------------
+    Starting Claude Code...
+    Starting Gemini CLI...
+    Starting OpenAI Codex...
 ```
+
+**Routing keywords:**
+- `research, search, find, explore...` → Gemini
+- `review, analyze, evaluate, compare...` → OpenAI
+- `build, create, fix, implement...` → Claude (default)
 
 ---
 

@@ -779,13 +779,13 @@ git add .
 git commit -m "[meta] Initialize project"
 
 # 5. Start working (all 3 tools)
-run.bat   # Select option [4] for all three
+run.bat
 ```
 
 ### 3-Model Daily Workflow
 
 1. **Open terminal** in project folder
-2. **Run `run.bat`** and select option [4] to launch all three tools
+2. **Run `run.bat`** and enter a multi-sentence task to launch tools concurrently
 3. **Check `shared-context.md`** - see current project state
 4. **Assign tasks by tool strength:**
    - Claude: Complex tasks, agents, file edits

@@ -170,9 +170,20 @@ echo  Authentication Setup
 echo ========================================
 echo.
 
-:: Check for existing OpenAI API key
+:: Initialize .env file if it doesn't exist
+if not exist ".env" (
+    echo # API Keys for 3-Model Workflow> ".env"
+    echo # This file is gitignored - do not commit>> ".env"
+    echo.>> ".env"
+)
+
+:: Check for existing OpenAI API key in .env or environment
 set "HAS_OPENAI_KEY=0"
 if defined OPENAI_API_KEY set "HAS_OPENAI_KEY=1"
+if exist ".env" (
+    findstr /c:"OPENAI_API_KEY=" ".env" >nul 2>&1
+    if !errorlevel!==0 set "HAS_OPENAI_KEY=1"
+)
 
 :: Show current auth status
 echo Current status:
@@ -194,21 +205,19 @@ echo ----------------------------------------
 echo  OpenAI API Key
 echo ----------------------------------------
 if !HAS_OPENAI_KEY!==1 (
-    echo   Already set. Skipping.
+    echo   Already set in .env. Skipping.
 ) else (
     echo   Get your key at: https://platform.openai.com/api-keys
     echo.
     set /p OPENAI_KEY="  Enter API key (or press Enter to skip): "
     if defined OPENAI_KEY (
-        setx OPENAI_API_KEY "!OPENAI_KEY!" >nul 2>&1
-        if !errorlevel!==0 (
-            set "OPENAI_API_KEY=!OPENAI_KEY!"
-            echo   API key saved successfully.
-            :: Update auth_status in config
-            powershell -Command "(Get-Content 'config\role_config.json') -replace '\"openai\": false', '\"openai\": true' | Set-Content 'config\role_config.json'" >nul 2>&1
-        ) else (
-            echo   ERROR: Could not save API key.
-        )
+        :: Save to .env file
+        echo OPENAI_API_KEY=!OPENAI_KEY!>> ".env"
+        echo   API key saved to .env
+        :: Also set for current session
+        set "OPENAI_API_KEY=!OPENAI_KEY!"
+        :: Update auth_status in config
+        powershell -Command "(Get-Content 'config\role_config.json') -replace '\"openai\": false', '\"openai\": true' | Set-Content 'config\role_config.json'" >nul 2>&1
     ) else (
         echo   Skipped.
     )

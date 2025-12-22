@@ -8,13 +8,13 @@
     },
     "research": {
       "description": "Research, exploration",
-      "keywords": ["research", "search", "find", "explore", "lookup", "investigate", "discover", "learn"],
+      "keywords": ["research"],
       "primary": "gemini",
       "fallback": ["claude", "openai"]
     },
     "analysis": {
       "description": "High-level analysis, code review",
-      "keywords": ["review", "analyze", "evaluate", "compare", "assess", "critique", "audit", "examine"],
+      "keywords": ["analyze", "review"],
       "primary": "openai",
       "fallback": ["claude"]
     }
@@ -38,7 +38,7 @@
   },
   "auth_status": {
     "claude": true,
-    "gemini": false,
-    "openai": false
+    "gemini": true,
+    "openai": true
   }
 }
