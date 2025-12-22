@@ -25,13 +25,17 @@ if (Test-Path "config\tasks\_workspace.txt") {
 }
 
 if (-not $workspacePath -or -not (Test-Path $workspacePath)) {
-    Write-Host "    Error: No workspace found" -ForegroundColor Red
+    if (-not $Quiet) {
+        Write-Host "    Error: No workspace found" -ForegroundColor Red
+    }
     exit 1
 }
 
 # Get active tools
 if (-not (Test-Path "config\tasks\_active.txt")) {
-    Write-Host "    Error: No active tools found" -ForegroundColor Red
+    if (-not $Quiet) {
+        Write-Host "    Error: No active tools found" -ForegroundColor Red
+    }
     exit 1
 }
 
@@ -56,12 +60,14 @@ $toolConfig = @{
     }
 }
 
-Write-Host ""
-Write-Host "  ========================================" -ForegroundColor Cyan
-Write-Host "  CLI Mode - Sequential Execution" -ForegroundColor Cyan
-Write-Host "  ========================================" -ForegroundColor Cyan
-Write-Host "  Workspace: $workspacePath"
-Write-Host ""
+if (-not $Quiet) {
+    Write-Host ""
+    Write-Host "  ========================================" -ForegroundColor Cyan
+    Write-Host "  CLI Mode - Sequential Execution" -ForegroundColor Cyan
+    Write-Host "  ========================================" -ForegroundColor Cyan
+    Write-Host "  Workspace: $workspacePath"
+    Write-Host ""
+}
 
 $totalTools = $activeTools.Count
 $currentTool = 0
@@ -71,7 +77,9 @@ foreach ($tool in $activeTools) {
     $config = $toolConfig[$tool]
 
     if (-not $config) {
-        Write-Host "  [$currentTool/$totalTools] Unknown tool: $tool" -ForegroundColor Yellow
+        if (-not $Quiet) {
+            Write-Host "  [$currentTool/$totalTools] Unknown tool: $tool" -ForegroundColor Yellow
+        }
         continue
     }
 
@@ -79,57 +87,65 @@ foreach ($tool in $activeTools) {
     $outputFile = "$workspacePath\$($tool)_output.txt"
 
     if (-not (Test-Path $taskFile)) {
-        Write-Host "  [$currentTool/$totalTools] No task file for $($config.name)" -ForegroundColor Yellow
+        if (-not $Quiet) {
+            Write-Host "  [$currentTool/$totalTools] No task file for $($config.name)" -ForegroundColor Yellow
+        }
         continue
     }
 
     $task = Get-Content $taskFile -Raw
+    $taskFirstLine = $task.Split("`n")[0].Trim()
 
-    Write-Host "  [$currentTool/$totalTools] Running $($config.name)..." -ForegroundColor White
     if (-not $Quiet) {
-        Write-Host "      Task: $($task.Split("`n")[0].Trim())" -ForegroundColor Gray
+        Write-Host "  [$currentTool/$totalTools] Running $($config.name)..." -ForegroundColor White
+        Write-Host "      Task: $taskFirstLine" -ForegroundColor Gray
     }
 
     $startTime = Get-Date
 
     try {
-        # Run the tool with the task as argument
-        # Capture output to file
         $command = $config.command
 
-        # Create a temporary script to run the command
-        $tempScript = "$workspacePath\_run_$tool.ps1"
-        @"
+        if ($Quiet) {
+            # Quiet mode: run directly, show only output
+            & $command $taskFirstLine 2>&1 | Tee-Object -FilePath $outputFile
+        } else {
+            # Verbose mode: run in subprocess with full output
+            $tempScript = "$workspacePath\_run_$tool.ps1"
+            @"
 `$task = @'
-$($task.Split("`n")[0].Trim())
+$taskFirstLine
 '@
 & $command `$task 2>&1 | Tee-Object -FilePath '$outputFile'
 "@ | Set-Content $tempScript -Encoding UTF8
 
-        # Run with timeout (5 minutes max)
-        $process = Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$tempScript`"" -PassThru -NoNewWindow -Wait
+            $process = Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$tempScript`"" -PassThru -NoNewWindow -Wait
 
-        $duration = ((Get-Date) - $startTime).TotalSeconds
+            $duration = ((Get-Date) - $startTime).TotalSeconds
 
-        if ($process.ExitCode -eq 0) {
-            Write-Host "      Done ($([math]::Round($duration, 1))s)" -ForegroundColor Green
-        } else {
-            Write-Host "      Completed with warnings ($([math]::Round($duration, 1))s)" -ForegroundColor Yellow
+            if ($process.ExitCode -eq 0) {
+                Write-Host "      Done ($([math]::Round($duration, 1))s)" -ForegroundColor Green
+            } else {
+                Write-Host "      Completed with warnings ($([math]::Round($duration, 1))s)" -ForegroundColor Yellow
+            }
+            Write-Host "      Output: $outputFile" -ForegroundColor Gray
+
+            Remove-Item $tempScript -ErrorAction SilentlyContinue
         }
-        Write-Host "      Output: $outputFile" -ForegroundColor Gray
-
-        # Clean up temp script
-        Remove-Item $tempScript -ErrorAction SilentlyContinue
     }
     catch {
         Write-Host "      Error: $_" -ForegroundColor Red
         "Error: $_" | Set-Content $outputFile
     }
 
-    Write-Host ""
+    if (-not $Quiet) {
+        Write-Host ""
+    }
 }
 
-Write-Host "  ========================================" -ForegroundColor Cyan
-Write-Host "  Complete - Results in $workspacePath" -ForegroundColor Green
-Write-Host "  ========================================" -ForegroundColor Cyan
-Write-Host ""
+if (-not $Quiet) {
+    Write-Host "  ========================================" -ForegroundColor Cyan
+    Write-Host "  Complete - Results in $workspacePath" -ForegroundColor Green
+    Write-Host "  ========================================" -ForegroundColor Cyan
+    Write-Host ""
+}

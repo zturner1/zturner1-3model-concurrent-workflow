@@ -1,39 +1,42 @@
 {
   "roles": {
-    "deep_work": {
-      "description": "Deep work, agents, complex tasks",
-      "keywords": ["build", "create", "implement", "refactor", "write", "develop", "fix", "agent", "complex", "multi-step"],
-      "primary": "claude",
-      "fallback": ["openai"]
-    },
     "research": {
-      "description": "Research, exploration",
-      "keywords": ["research"],
+      "description": "Scout & Researcher: Information gathering, exploration, web search",
+      "keywords": ["research", "find", "search", "explore", "lookup", "where", "what", "summarize", "document", "map", "discover", "investigate", "fetch", "browse"],
       "primary": "gemini",
       "fallback": ["claude", "openai"]
     },
     "analysis": {
-      "description": "High-level analysis, code review",
-      "keywords": ["analyze", "review"],
+      "description": "Auditor: High-level reasoning, validation, code review",
+      "keywords": ["analyze", "review", "audit", "validate", "check", "optimize", "security", "why", "explain", "critique", "assess", "evaluate", "compare", "reason"],
       "primary": "openai",
       "fallback": ["claude"]
+    },
+    "deep_work": {
+      "description": "Builder & Architect: Implementation, execution, deep work",
+      "keywords": ["build", "create", "implement", "refactor", "write", "develop", "fix", "agent", "complex", "multi-step", "execute", "test", "commit", "deploy", "code", "edit", "modify", "change", "update", "add", "remove", "delete"],
+      "primary": "claude",
+      "fallback": ["openai"]
     }
   },
   "tools": {
     "claude": {
       "name": "Claude Code",
       "command": "claude",
-      "context_file": "CLAUDE.md"
+      "context_file": "CLAUDE.md",
+      "role": "Builder & Architect"
     },
     "gemini": {
       "name": "Gemini CLI",
       "command": "gemini",
-      "context_file": "GEMINI.md"
+      "context_file": "GEMINI.md",
+      "role": "Scout & Researcher"
     },
     "openai": {
       "name": "OpenAI Codex",
       "command": "codex",
-      "context_file": "OPENAI.md"
+      "context_file": "OPENAI.md",
+      "role": "Auditor"
     }
   },
   "auth_status": {

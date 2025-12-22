@@ -34,3 +34,104 @@ Session started: Mon 12/22/2025  1:14:06.83
     claude -> save the document to the directory
 [ 1:16:13.31] Launching Gemini CLI 
 [ 1:16:13.31] Launching Claude Code 
+ 
+======================================== 
+Session started: Mon 12/22/2025 13:22:39.40 
+======================================== 
+ 
+======================================== 
+Session started: Mon 12/22/2025 13:57:05.99 
+======================================== 
+[13:57:12.38] Input: /status 
+[13:57:20.93] Input: /help 
+[13:57:32.61] Input: run.bat /cli 
+    claude -> run; bat /cli
+[13:57:33.23] Launching Claude Code 
+ 
+======================================== 
+Session started: Mon 12/22/2025 13:57:58.33 
+======================================== 
+[13:58:00.13] Input: /cli 
+    claude -> /cli
+[13:58:00.70] Launching Claude Code 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:18:06.09 
+======================================== 
+[14:19:08.68] Input: hello 
+    claude -> hello
+[14:19:09.25] Launching in CLI mode 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:20:22.68 
+======================================== 
+[14:20:24.86] Input: hello 
+    claude -> hello
+[14:20:25.42] Launching in CLI mode 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:26:04.15 
+======================================== 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:26:09.27 
+======================================== 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:30:29.34 
+======================================== 
+[14:30:33.09] Input: hello 
+    claude -> hello
+[14:30:33.38] Launching in CLI mode 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:31:27.50 
+======================================== 
+[14:31:29.26] Input: hello 
+    claude -> hello
+[14:31:29.55] Launching in CLI mode 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:36:52.55 
+======================================== 
+[14:36:54.45] Input: hello 
+    claude -> hello
+[14:36:54.75] Launching in CLI mode 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:41:18.30 
+======================================== 
+[14:41:20.20] Input: hello 
+    claude -> hello
+[14:41:20.48] Launching in CLI mode 
+[14:41:25.71] CLI script finished 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:45:58.49 
+======================================== 
+[14:46:00.36] Input: hello 
+    claude -> hello
+[14:46:00.65] Launching in CLI mode 
+[14:46:07.10] CLI script finished 
+ 
+======================================== 
+Session started [CLI MODE]: Mon 12/22/2025 14:54:17.37 
+======================================== 
+[14:54:19.36] Input: hello 
+    claude -> hello
+[14:54:19.67] Launching in CLI mode 
+[14:54:26.96] CLI script finished 
+[14:54:27.18] Shared context updated 
+[14:54:27.18] Returning to prompt 
+[14:55:56.78] Input: what are the files in this directory? 
+    claude -> what are the files in this directory
+[14:55:57.08] Launching in CLI mode 
+[14:56:20.66] CLI script finished 
+[14:56:20.87] Shared context updated 
+[14:56:20.87] Returning to prompt 
+[14:57:33.36] Input: research what is markdown 
+    gemini -> research what is markdown
+[14:57:33.68] Launching in CLI mode 
+[14:57:43.38] CLI script finished 
+[14:57:43.58] Shared context updated 
+[14:57:43.59] Returning to prompt 

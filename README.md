@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Version](https://img.shields.io/badge/version-1.0-blue.svg)
-![Status](https://img.shields.io/badge/status-untested-yellow.svg)
+![Status](https://img.shields.io/badge/status-beta-green.svg)
 ![License](https://img.shields.io/badge/license-CC%20BY--NC%204.0-green.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)
 
@@ -54,11 +54,10 @@ Terminal-based AI that lives **inside** your project:
 │           │ shared-context.md  │                Sync Layer │
 │           └────────────────────┘                           │
 │                       │                                    │
-│        ┌──────────────┼──────────────┐                     │
-│        ▼              ▼              ▼                     │
-│   ┌─────────┐   ┌──────────┐   ┌──────────┐                │
-│   │research/│   │ drafts/  │   │ output/  │  Shared Output │
-│   └─────────┘   └──────────┘   └──────────┘                │
+│                       ▼                                    │
+│           ┌────────────────────┐                           │
+│           │    workspace/      │           Session Output  │
+│           └────────────────────┘                           │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
                             │
@@ -86,6 +85,39 @@ Terminal-based AI that lives **inside** your project:
 
 ---
 
+## 📊 Feature Status
+
+| Feature | Status | Notes |
+|:--------|:------:|:------|
+| **Core** | | |
+| Interactive router | ✅ | Keyword-based task routing |
+| GUI mode (`run_gui.bat`) | ✅ | Each tool in separate window |
+| CLI mode (`run_cli.bat`) | ✅ | Sequential in single terminal |
+| Smart task routing | ✅ | Routes by first word of sentence |
+| Session workspaces | ✅ | Timestamped folders in `workspace/` |
+| **Tools** | | |
+| Claude Code integration | ✅ | Deep work, file operations |
+| Gemini CLI integration | ✅ | Research, web search |
+| OpenAI Codex integration | ✅ | Analysis, code review |
+| **Configuration** | | |
+| `.env` support | ✅ | API keys loaded automatically |
+| `role_config.json` | ✅ | Customizable routing rules |
+| Context files auto-load | ✅ | CLAUDE.md, GEMINI.md, OPENAI.md |
+| **Logging & Debug** | | |
+| Activity logging | ✅ | `logs/run.log` |
+| Log rotation (100MB) | ✅ | Keeps 5 backup files |
+| Debug mode | ✅ | `run.bat /debug` |
+| Validation script | ✅ | `scripts/test_setup.ps1` |
+| **Collaboration** | | |
+| Shared context sync | ✅ | `shared-context.md` |
+| Agent collaboration context | ✅ | Agents know each other's tasks |
+| **Planned** | | |
+| `/workspace` command | 🔲 | Session management |
+| Linux/macOS support | 🔲 | Currently Windows only |
+| Custom routing rules UI | 🔲 | Edit rules via command |
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -102,7 +134,7 @@ git clone https://github.com/zturner1/zturner1-3model-concurrent-workflow.git
 cd zturner1-3model-concurrent-workflow
 
 # Install all 3 CLI tools
-install.bat
+scripts\install.bat
 ```
 
 ### Authentication
@@ -140,7 +172,8 @@ notepad .env
 ### Launch
 
 ```bash
-run.bat
+run_gui.bat    # Concurrent mode (3 windows)
+run_cli.bat    # Sequential mode (1 terminal)
 ```
 
 ```
@@ -187,11 +220,13 @@ project/
 ├── 🟢 OPENAI.md           # OpenAI context (auto-loads)
 ├── 🔄 shared-context.md   # Cross-tool sync
 ├── 🎨 .styles/            # Output style definitions
-├── 📚 research/           # Research outputs
-├── 📝 drafts/             # Work in progress
-├── 📦 output/             # Final deliverables
-├── ⚙️ scripts/            # Automation
-└── 📖 docs/               # Documentation
+├── 📖 docs/               # Documentation
+│   └── library/           # Reference docs (accessible via /docs)
+├── ⚙️ scripts/            # Automation & launchers
+├── 🐍 cli/                # Python CLI module
+├── ⚙️ config/             # Runtime configuration
+├── 📝 logs/               # Execution logs
+└── 📂 workspace/          # Session outputs
 ```
 
 ---
@@ -200,10 +235,9 @@ project/
 
 | Doc | Description |
 |:----|:------------|
-| 📐 [Architecture](architecture_layout.md) | Complete system documentation |
+| 📐 [Architecture](docs/architecture.md) | Complete system documentation |
 | 💡 [Philosophy](docs/philosophy.md) | Why terminal AI changes everything |
 | 📊 [Diagrams](docs/diagram.md) | Visual workflow diagrams |
-| 📋 [Requirements](requirements.md) | Setup and prerequisites |
 
 ---
 

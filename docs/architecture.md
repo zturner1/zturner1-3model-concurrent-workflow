@@ -10,7 +10,7 @@ Traditional browser-based AI workflows fragment your work across chats, tabs, an
 
 - **File-based ownership**: Everything lives in files you control
 - **Persistent context**: AI remembers your project across sessions
-- **3-Model Concurrent**: Run Claude, Gemini, and OpenAI simultaneously
+- **3-Model Concurrent**: Run Claude, Gemini, and Codex simultaneously
 - **Tool-agnostic**: Switch between AI tools without losing state
 - **Scalable**: From simple notes to complex multi-agent workflows
 
@@ -20,9 +20,11 @@ Traditional browser-based AI workflows fragment your work across chats, tabs, an
 |------|--------------|-----------|
 | Claude Code | Deep work, agents, complex tasks | Extended context, multi-agent, file ops |
 | Gemini CLI | Research, exploration | Web search, generous free tier |
-| OpenAI CLI | High-level analysis, code review | Strong reasoning, code understanding |
+| Codex CLI | High-level analysis, code review | Strong reasoning, code understanding |
 
 All three tools operate on the same project folder, share context via `shared-context.md`, and write outputs to common directories.
+
+The 40/35/25 task split shown in the diagram is a reference point, not a strict quota.
 
 ---
 
@@ -30,42 +32,44 @@ All three tools operate on the same project folder, share context via `shared-co
 
 ```
 project/
-├── CLAUDE.md                    # Claude Code context (auto-loads)
-├── GEMINI.md                    # Gemini CLI context (auto-loads)
-├── OPENAI.md                    # OpenAI CLI context (auto-loads)
-├── shared-context.md            # Cross-tool sync (all 3 tools read this)
-│
-├── .styles/                     # Output style definitions
-│   ├── research.md              # Research synthesis style
-│   ├── technical.md             # Technical planning style
-│   ├── review.md                # Critical review style
-│   ├── script.md                # Script writing style
-│   └── creative.md              # Creative writing style
-│
-├── research/                    # Research outputs from AI agents
-│   ├── sources/                 # Collected references and citations
-│   ├── summaries/               # Synthesized research summaries
-│   └── raw/                     # Raw research dumps
-│
-├── drafts/                      # Work-in-progress documents
-│   ├── v1/                      # First drafts
-│   ├── v2/                      # Revisions
-│   └── feedback/                # Agent critique and feedback
-│
-├── output/                      # Final deliverables
-│   ├── published/               # Released/shared content
-│   └── internal/                # Internal documentation
-│
-├── scripts/                     # Automation and utility scripts
-│   ├── prompts/                 # Reusable prompt templates
-│   └── tools/                   # Helper scripts
-│
-├── logs/                        # Session logs and decision history
-│   └── decisions/               # Key decision records
-│
-└── archive/                     # Completed work for reference
-    └── YYYY-MM/                 # Organized by date
+|-- CLAUDE.md                    # Claude Code context (auto-loads)
+|-- GEMINI.md                    # Gemini CLI context (auto-loads)
+|-- OPENAI.md                    # OpenAI CLI context (auto-loads)
+|-- shared-context.md            # Cross-tool sync (all 3 tools read this)
+|-- run_cli.bat                  # Main entry point
+|
+|-- cli/                         # Python CLI module
+|   |-- knowledge/               # Document Library integration
+|   `-- *.py                     # CLI components
+|
+|-- config/                      # Runtime configuration
+|   |-- role_config.json         # Task routing rules
+|   `-- tasks/                   # Session task files
+|
+|-- docs/                        # Documentation
+|   |-- library/                 # Reference docs (via /docs command)
+|   |-- architecture.md          # This file
+|   `-- *.md                     # Other docs
+|
+|-- scripts/                     # Automation and utility scripts
+|   |-- run_cli.py               # Python CLI entry
+|   |-- install.bat              # Dependency installer
+|   `-- tools/                   # Tool launchers
+|
+|-- logs/                        # Session logs
+|   `-- run.log                  # Activity log
+|
+|-- workspace/                   # Session outputs
+|   `-- YYYY-MM-DD_HH-MM-SS/     # Timestamped session folders
+|       |-- _session.json        # Session manifest
+|       |-- claude_output.txt    # Claude's output
+|       |-- gemini_output.txt    # Gemini's output
+|       `-- openai_output.txt    # OpenAI's output
+|
+`-- .styles/                     # Output style definitions
+    `-- *.md                     # Style templates
 ```
+
 
 ### Directory Purposes
 
@@ -73,26 +77,23 @@ project/
 |-----------|---------|-------------|
 | `CLAUDE.md` / `GEMINI.md` / `OPENAI.md` | AI memory (root level) | Auto-loaded by each tool on startup |
 | `shared-context.md` | Cross-tool sync | Read at start, update at end of each session |
-| `.styles/` | Output style definitions | Switch writing modes |
-| `research/` | Information gathering | New topics, fact-finding, source collection |
-| `drafts/` | Work in progress | Active writing and iteration |
-| `output/` | Final deliverables | Completed, polished work |
-| `scripts/` | Automation | Reusable prompts and helper tools |
-| `logs/` | History | Session summaries, decision records |
-| `archive/` | Reference | Completed projects, past work |
+| `cli/` | Python CLI module | Core application code |
+| `config/` | Configuration | Routing rules, task files |
+| `docs/` | Documentation | Architecture, reference library |
+| `scripts/` | Automation | Launchers, utilities |
+| `logs/` | History | Session logs |
+| `workspace/` | Session outputs | Tool outputs per session |
+| `.styles/` | Output styles | Switch writing modes |
 
 ### Naming Conventions
 
-- **Research files**: `topic-YYYY-MM-DD.md` (e.g., `ai-workflows-2024-01-15.md`)
-- **Drafts**: `title-v1.md`, `title-v2.md` (version in filename)
-- **Feedback**: `title-feedback-agent.md` (indicate source)
-- **Decisions**: `YYYY-MM-DD-decision-topic.md`
+- **Session folders**: `YYYY-MM-DD_HH-MM-SS` (auto-generated)
+- **Output files**: `{tool}_output.txt` per session
+- **Commit messages**: `[type] description` format
 
 ### Cleanup Guidelines
 
-- Move completed drafts to `output/` when finalized
-- Archive projects monthly to `archive/YYYY-MM/`
-- Clear `research/raw/` periodically (keep summaries)
+- Clear old workspace sessions periodically
 - Review and prune context files when they grow large
 
 ---
@@ -172,7 +173,7 @@ This visibility helps you know when to:
 ## Role in 3-Model System
 - Claude Code: Deep work, agents, complex tasks
 - Gemini CLI (this): Research, exploration, web search
-- OpenAI CLI: High-level analysis, code review
+- Codex CLI: High-level analysis, code review
 
 ## Research Focus
 [What topics need investigation]
@@ -182,7 +183,7 @@ This visibility helps you know when to:
 - [Topic 2]: [What to look for]
 
 ## Completed Research
-- `research/summaries/topic.md` - [Brief summary]
+- `workspace/[session]/gemini_output.txt` - [Brief summary]
 
 ## Current Questions
 1. [Open question needing research]
@@ -192,7 +193,7 @@ This visibility helps you know when to:
 - [YYYY-MM-DD]: Searched [topic], found [key insight]
 ```
 
-### OPENAI.md Template
+### CODEX.md Template
 
 ```markdown
 # Project: [Project Name]
@@ -200,7 +201,7 @@ This visibility helps you know when to:
 ## Role in 3-Model System
 - Claude Code: Deep work, agents, complex tasks
 - Gemini CLI: Research, exploration, web search
-- OpenAI CLI (this): High-level analysis, code review
+- Codex CLI (this): High-level analysis, code review
 
 ## Analysis Focus
 [What needs analysis or review]
@@ -209,7 +210,7 @@ This visibility helps you know when to:
 - `path/to/file` - [What to review]
 
 ## Completed Analysis
-- `research/summaries/analysis.md` - [Brief summary]
+- `workspace/[session]/openai_output.txt` - [Brief summary]
 
 ## Code Review Queue
 1. [File or feature to review]
@@ -233,7 +234,7 @@ Updated by: [Tool name]
 |------|------|--------------|
 | Claude Code | Deep work, agents, complex tasks | CLAUDE.md |
 | Gemini CLI | Research, exploration, web search | GEMINI.md |
-| OpenAI CLI | High-level analysis, code review | OPENAI.md |
+| Codex CLI | High-level analysis, code review | CODEX.md |
 
 ## Project State
 - **Phase**: [Planning/Research/Drafting/Review/Complete]
@@ -279,38 +280,24 @@ Agents are specialized sub-AIs that handle specific tasks with fresh context win
 
 | Agent Role | Purpose | Example Prompt |
 |------------|---------|----------------|
-| Research Agent | Gather information | "Research [topic]. Find 5 reputable sources. Write findings to `research/summaries/topic.md`" |
-| Analysis Agent | Deep technical analysis | "Analyze [problem]. Consider trade-offs. Document in `drafts/analysis.md`" |
-| Critique Agent | Review and feedback | "Review `drafts/article-v1.md`. Identify weaknesses. Write feedback to `drafts/feedback/`" |
-| Writer Agent | Generate content | "Write [content type] based on `research/summaries/`. Save to `drafts/v1/`" |
-| Planner Agent | Break down tasks | "Create implementation plan for [goal]. List steps in `logs/decisions/`" |
+| Research Agent | Gather information | "Research [topic]. Find 5 reputable sources." |
+| Analysis Agent | Deep technical analysis | "Analyze [problem]. Consider trade-offs." |
+| Critique Agent | Review and feedback | "Review this code. Identify weaknesses." |
+| Writer Agent | Generate content | "Write [content type] based on the research." |
+| Planner Agent | Break down tasks | "Create implementation plan for [goal]." |
 
 ### Workflow Pattern
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Main Conversation                     │
-│         (Strategic direction and oversight)              │
-└───────────────┬───────────────────────────┬─────────────┘
-                │                           │
-                ▼                           ▼
-    ┌───────────────────┐       ┌───────────────────┐
-    │  Research Agent   │       │  Analysis Agent   │
-    │  (Fresh context)  │       │  (Fresh context)  │
-    └─────────┬─────────┘       └─────────┬─────────┘
-              │                           │
-              ▼                           ▼
-    ┌───────────────────┐       ┌───────────────────┐
-    │ research/topic.md │       │ drafts/analysis.md│
-    └───────────────────┘       └───────────────────┘
-                │                           │
-                └───────────┬───────────────┘
-                            ▼
-              ┌─────────────────────────────┐
-              │     Main: Synthesize        │
-              │     Agent Outputs           │
-              └─────────────────────────────┘
+Main conversation (strategy)
+|-- Research agent -> gemini_output.txt
+|-- Analysis agent -> openai_output.txt
+|-- Implementation -> claude_output.txt
+`-- All outputs -> workspace/[session]/
+
+Main: synthesize agent outputs
 ```
+
 
 ### Agent Guidelines
 
@@ -329,19 +316,17 @@ For each tool, document:
 - Key features
 - Pricing/availability
 - Strengths and limitations
-Write findings to research/summaries/terminal-ai-tools.md
 Include sources with links.
 ```
 
 **Critique Agent:**
 ```
-Review drafts/article-v1.md with a critical eye.
+Review this code/document with a critical eye.
 Identify:
 - Logical gaps or unsupported claims
 - Areas needing more evidence
 - Structural issues
 - Unclear explanations
-Write detailed feedback to drafts/feedback/article-v1-critique.md
 Be constructive but thorough.
 ```
 
@@ -495,7 +480,7 @@ Dynamic, engaging, personality-driven.
 
 ## Constraints
 - Show, don't tell
-- Avoid clichés
+- Avoid cliches
 - Match voice to audience
 - Maintain consistent tone
 ```
@@ -554,12 +539,16 @@ git commit -m "[output] Finalize and publish architecture guide"
 *~
 .DS_Store
 
-# Large research dumps (optional - uncomment if needed)
-# research/raw/*.pdf
-# research/raw/*.epub
+# Session workspaces
+workspace/
+
+# Runtime files
+config/tasks/
+config/knowledge_index.json
 
 # Sensitive context (if any)
 .private/
+.env
 
 # Editor files
 *.swp
@@ -570,8 +559,7 @@ git commit -m "[output] Finalize and publish architecture guide"
 ### Branch Strategy
 
 - `main`: Stable, complete work
-- `draft/[topic]`: Active drafting
-- `research/[topic]`: Research exploration
+- `feature/[topic]`: Active development
 - `experiment/[idea]`: Trying new approaches
 
 ### When to Commit
@@ -593,7 +581,7 @@ Run all three AI tools concurrently, each handling its specialty.
 |------|----------|--------------|-----------|
 | Claude Code | Complex tasks, agents | CLAUDE.md | Extended context, multi-agent, file ops |
 | Gemini CLI | Research, exploration | GEMINI.md | Web search, generous free tier |
-| OpenAI CLI | Analysis, code review | OPENAI.md | Strong reasoning, code understanding |
+| Codex CLI | Analysis, code review | CODEX.md | Strong reasoning, code understanding |
 
 ### When to Use Each Tool
 
@@ -609,7 +597,7 @@ Run all three AI tools concurrently, each handling its specialty.
 - Quick queries and exploration
 - Compiling sources
 
-**OpenAI CLI:**
+**Codex CLI:**
 - Code review and analysis
 - Architecture evaluation
 - Trade-off analysis
@@ -643,7 +631,7 @@ When switching from Gemini (research) to Claude (writing):
 ```markdown
 ## Handoff Notes
 Completed research on terminal AI tools using Gemini.
-Key findings in research/summaries/terminal-ai-tools.md
+Key findings in workspace/[session]/gemini_output.txt
 Ready for Claude to synthesize into article draft.
 Focus areas: workflow benefits, context management.
 ```
@@ -725,8 +713,8 @@ Add to context file at session end:
 
 **Critical Assets:**
 - Context files (`CLAUDE.md`, `GEMINI.md`, `OPENAI.md`, `shared-context.md`)
-- Research summaries (`research/summaries/`)
-- Final outputs (`output/`)
+- Configuration (`config/role_config.json`)
+- CLI module (`cli/`)
 
 ### Recovery Scenarios
 
@@ -760,23 +748,20 @@ Add to context file at session end:
 ### New Project Setup
 
 ```bash
-# 1. Create project folder
-mkdir my-project && cd my-project
+# 1. Clone the project
+git clone https://github.com/your-repo/3model-workflow.git
+cd 3model-workflow
 
-# 2. Create structure
-mkdir -p .styles research/{sources,summaries,raw} \
-         drafts/{v1,v2,feedback} output/{published,internal} \
-         scripts/{prompts,tools} logs/decisions archive .private
+# 2. Install dependencies
+scripts\install.bat
+pip install -r requirements.txt
 
-# 3. Create context files for all 3 tools
-# (Or copy from a template project)
+# 3. Configure environment
+copy .env.example .env
+# Edit .env with your API keys
 
-# 4. Initialize git
-git init
-echo "*.tmp" > .gitignore
-echo ".private/" >> .gitignore
-git add .
-git commit -m "[meta] Initialize project"
+# 4. Run the CLI
+run_cli.bat
 
 # 5. Start working (all 3 tools)
 run.bat
@@ -790,7 +775,7 @@ run.bat
 4. **Assign tasks by tool strength:**
    - Claude: Complex tasks, agents, file edits
    - Gemini: Research, web search, exploration
-   - OpenAI: Analysis, code review, reasoning
+   - Codex: Analysis, code review, reasoning
 5. **Work in parallel** - each tool writes to project files
 6. **Update `shared-context.md`** when switching focus
 7. **Commit** - save your work with git
@@ -856,4 +841,4 @@ Date: YYYY-MM-DD
 
 ---
 
-*This architecture transforms AI from a chat interface into a collaborative 3-model workflow system. Your projects become the container — Claude, Gemini, and OpenAI become your team.*
+*This architecture transforms AI from a chat interface into a collaborative 3-model workflow system. Your projects become the container - Claude, Gemini, and Codex become your team.*

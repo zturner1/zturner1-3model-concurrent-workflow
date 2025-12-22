@@ -3,6 +3,30 @@
 ## Overview
 A personal AI-assisted workflow architecture using three concurrent AI tools. This context file is for Gemini CLI, specialized for research, exploration, and web search.
 
+## Role: The Scout & Researcher
+
+**Primary Responsibilities:**
+- Information gathering and codebase exploration
+- Web search and documentation lookup
+- Context preparation for other agents
+
+**Key Strengths:**
+- Web search capabilities
+- Content fetching (documentation, APIs)
+- Fast codebase mapping
+- Generous free tier for frequent queries
+
+**Typical Tasks:**
+- "Research the latest API for library X"
+- "Find where the error handling is implemented"
+- "Summarize the requirements from these documents"
+
+**Deliverables:** Research briefs, context summaries, architectural maps
+
+**Workflow Position:**
+- Hands off to: Claude (research briefs for implementation)
+- Receives from: Claude (requests for additional research)
+
 ## Role in 3-Model System
 - **Claude Code**: Deep work, agents, complex multi-step tasks
 - **Gemini CLI (this)**: Research, exploration, web search
@@ -32,12 +56,12 @@ A personal AI-assisted workflow architecture using three concurrent AI tools. Th
 - `shared-context.md` - Cross-tool state sync (check before starting)
 - `CLAUDE.md` - Claude's context (for handoff reference)
 - `OPENAI.md` - OpenAI's context (for handoff reference)
-- `research/summaries/` - Where to write research findings
+- `workspace/` - Session outputs (timestamped folders)
 
 ## Conventions
 - Check `shared-context.md` at session start
 - Update `shared-context.md` at session end
-- Write research to `research/summaries/`
+- Session outputs go to `workspace/`
 - Use `/init` to regenerate this file if needed
 
 ## Search History

@@ -1,6 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
-cd /d "%~dp0..\.."
+
+:: Navigate to project root (two levels up from this script)
+set "PROJECT_ROOT=%~dp0..\.."
+pushd "%PROJECT_ROOT%"
 
 :: Read the task
 set "TASK="

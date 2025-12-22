@@ -1,35 +1,35 @@
-# You’ve Been Using AI the Hard Way — Use the Terminal Instead
+# You've Been Using AI the Hard Way - Use the Terminal Instead
 
-If you’re still using AI exclusively in a browser tab, you’re doing it the slow way.
+If you're still using AI exclusively in a browser tab, you're doing it the slow way.
 
-Most people don’t realize this, but nearly every major AI tool now has a terminal version — and once you experience it, going back to the browser feels like working with one hand tied behind your back.
+Most people don't realize this, but nearly every major AI tool now has a terminal version - and once you experience it, going back to the browser feels like working with one hand tied behind your back.
 
-This isn’t just about writing code. Terminal-based AI fundamentally changes how you research, write, plan projects, and manage context. It gives you control. And that control compounds.
+This isn't just about writing code. Terminal-based AI fundamentally changes how you research, write, plan projects, and manage context. It gives you control. And that control compounds.
 
 ---
 
 ## The Browser Workflow Is Broken
 
-If this sounds familiar, you’re not alone:
+If this sounds familiar, you're not alone:
 
 - You start a project in ChatGPT or another AI app.
 - The conversation gets long. The scrollbar disappears.
 - Context starts breaking.
-- You open new chats “just to be safe.”
+- You open new chats "just to be safe."
 - You cross-check answers in Claude, Gemini, maybe another tool.
 - You copy-paste snippets into a notes app.
 - Eventually everything is scattered.
 
-At that point, your project isn’t a project anymore. It’s fragments spread across chats, tabs, and half-finished documents.
+At that point, your project isn't a project anymore. It's fragments spread across chats, tabs, and half-finished documents.
 
-The problem isn’t the AI.  
+The problem isn't the AI.  
 The problem is the interface.
 
 ---
 
 ## The Terminal Is the Missing Piece
 
-AI in the terminal solves this by doing one critical thing the browser can’t:
+AI in the terminal solves this by doing one critical thing the browser can't:
 
 **It lives inside your project.**
 
@@ -38,7 +38,7 @@ When you run AI tools from a terminal:
 - They operate directly inside a folder on your machine
 - They can read and write files
 - They persist context between sessions
-- They don’t trap your work in a chat window
+- They don't trap your work in a chat window
 
 Instead of *talking about* your project, the AI becomes part of it.
 
@@ -48,7 +48,7 @@ Instead of *talking about* your project, the AI becomes part of it.
 
 Gemini CLI is a great entry point because it has a generous free tier and installs with a single command.
 
-Once installed, you create a project directory and launch Gemini from inside it. Immediately, you’ll notice something different:
+Once installed, you create a project directory and launch Gemini from inside it. Immediately, you'll notice something different:
 
 - The terminal shows your remaining context window
 - You can ask Gemini to research topics and write files directly
@@ -61,7 +61,7 @@ For example, you can ask Gemini to:
 - Write results into a Markdown file
 - Create a structured blog outline
 
-And it will do exactly that — directly into your project folder.
+And it will do exactly that - directly into your project folder.
 
 ---
 
@@ -69,7 +69,7 @@ And it will do exactly that — directly into your project folder.
 
 The real magic starts when you initialize a project context file.
 
-Running `/init` in Gemini creates a `gemini.md` file. This file becomes persistent memory for your project. It contains:
+Running `/init` in Gemini creates a `GEMINI.md` file. This file becomes persistent memory for your project. It contains:
 
 - What the project is about
 - Key decisions
@@ -82,7 +82,7 @@ That means:
 
 - No re-explaining the project
 - No lost threads
-- No “remind me what we were doing”
+- No "remind me what we were doing"
 
 You own your context. It lives on your hard drive.
 
@@ -92,7 +92,7 @@ You own your context. It lives on your hard drive.
 
 Claude Code takes this idea even further.
 
-Like Gemini, it runs in the terminal and supports project context files (`claude.md`). But Claude introduces something that changes how large projects scale.
+Like Gemini, it runs in the terminal and supports project context files (`CLAUDE.md`). But Claude introduces something that changes how large projects scale.
 
 ### Agents
 
@@ -140,7 +140,7 @@ You can define:
 - Depth
 - Purpose
 
-Then switch styles depending on what you’re doing:
+Then switch styles depending on what you're doing:
 
 - Script writing
 - Technical planning
@@ -159,7 +159,7 @@ For example:
 
 - Claude for deep work
 - Gemini for research
-- Codex for high-level analysis
+- Codex CLI for high-level analysis
 
 As long as they share the same folder and synced context files, they all see the same project state.
 
@@ -209,10 +209,10 @@ Once you experience this workflow, browser-based AI starts to feel primitive.
 
 ## Final Thought
 
-This isn’t about abandoning GUIs forever.  
-It’s about control.
+This isn't about abandoning GUIs forever.  
+It's about control.
 
 When AI works *inside* your projects instead of around them, you stop fighting the tool and start building with it.
 
 Try it once.  
-You won’t go back.
+You won't go back.

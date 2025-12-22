@@ -22,6 +22,12 @@ nul
 # Session workspaces (temporary collaboration folders)
 workspace/
 
+# Runtime task files
+config/tasks/
+
+# Auto-generated index cache
+config/knowledge_index.json
+
 # Editor files
 *.swp
 .vscode/
@@ -29,3 +35,17 @@ workspace/
 
 # OS files
 desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.cli_history
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
