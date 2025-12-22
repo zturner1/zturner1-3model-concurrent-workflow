@@ -69,7 +69,7 @@ And it will do exactly that — directly into your project folder.
 
 The real magic starts when you initialize a project context file.
 
-Running `/init` in Gemini creates a `gemini.md` file. This file becomes persistent memory for your project. It contains:
+Running `/init` in Gemini creates a `GEMINI.md` file. This file becomes persistent memory for your project. It contains:
 
 - What the project is about
 - Key decisions
@@ -92,7 +92,7 @@ You own your context. It lives on your hard drive.
 
 Claude Code takes this idea even further.
 
-Like Gemini, it runs in the terminal and supports project context files (`claude.md`). But Claude introduces something that changes how large projects scale.
+Like Gemini, it runs in the terminal and supports project context files (`CLAUDE.md`). But Claude introduces something that changes how large projects scale.
 
 ### Agents
 
