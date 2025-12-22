@@ -1,0 +1,36 @@
+ 
+======================================== 
+Session started: Mon 12/22/2025  1:02:45.83 
+======================================== 
+[ 1:03:23.30] Input: research how to take care of betta fish. 
+    claude -> /exit
+[ 1:05:47.21] Input: exit 
+    claude -> exit
+ 
+======================================== 
+Session started: Mon 12/22/2025  1:05:57.21 
+======================================== 
+[ 1:06:04.66] Input: research how to care for betta fish. 
+    gemini -> research how to care for betta fish
+ 
+======================================== 
+Session started: Mon 12/22/2025  1:08:01.86 
+======================================== 
+[ 1:08:06.68] Input: how to care for betta fish 
+    claude -> how to care for betta fish
+[ 1:08:08.69] Launching Claude Code 
+[ 1:08:26.11] Input: research how to care for betta fish 
+    gemini -> research how to care for betta fish
+[ 1:08:27.86] Launching Gemini CLI 
+ 
+======================================== 
+Session started: Mon 12/22/2025  1:14:06.83 
+======================================== 
+[ 1:14:19.26] Input: research care for beta fish 
+    gemini -> research care for beta fish
+[ 1:14:21.12] Launching Gemini CLI 
+[ 1:16:11.48] Input: research care for beta fish, and create a document about it. save the document to the directory. 
+    gemini -> research care for beta fish, and create a document about it
+    claude -> save the document to the directory
+[ 1:16:13.31] Launching Gemini CLI 
+[ 1:16:13.31] Launching Claude Code 

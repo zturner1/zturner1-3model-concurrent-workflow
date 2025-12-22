@@ -19,6 +19,9 @@ nul
 # Sensitive/private content
 .private/
 
+# Session workspaces (temporary collaboration folders)
+workspace/
+
 # Editor files
 *.swp
 .vscode/

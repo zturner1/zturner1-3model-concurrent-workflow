@@ -1,6 +1,6 @@
 # Shared Project Context
 
-Last updated: 2024-12-21
+Last updated: 2025-12-22
 Updated by: Claude Code
 
 ## 3-Model Architecture
@@ -12,27 +12,40 @@ Updated by: Claude Code
 | OpenAI CLI | High-level analysis, code review | OPENAI.md |
 
 ## Project State
-- **Phase**: Setup Complete
-- **Priority**: Test 3-model concurrent workflow
+- **Phase**: Implementation Complete
+- **Priority**: Production testing
 - **Deadline**: None
 
 ## Active Tasks
-1. Install all three CLI tools (run install.bat)
-2. Authenticate each tool
-3. Test concurrent workflow with run.bat
+1. Test full workflow with real tasks
+2. Monitor for bugs/issues
 
 ## Recent Changes
 - 2024-12-21 (Claude): Initial project setup
 - 2024-12-21 (Claude): Upgraded to 3-model concurrent architecture
-- 2024-12-21 (Claude): Added OPENAI.md, updated all context files
+- 2025-12-22 (Claude): Major implementation session:
+  - Merged run.bat and router.bat into unified interactive router
+  - Added .env support for API keys
+  - Fixed routing bugs (BOM encoding, batch script parsing)
+  - Added collaboration context for agents (shared workspace)
+  - Added session workspaces with manifests
+  - Added window arrangement (side-by-side)
+  - Implemented CLI mode (/cli flag)
+  - Added logging with 100MB rotation
+  - Created launcher scripts for each tool
+
+## Features Implemented
+- **GUI Mode**: Concurrent execution in separate windows
+- **CLI Mode**: Sequential execution in single terminal (`run.bat /cli`)
+- **Smart Routing**: Keywords route to appropriate tools
+- **Collaboration**: Agents share workspace and know each other's tasks
+- **Logging**: All activity logged to `logs/run.log`
 
 ## Handoff Notes
-All three context files are ready. Each tool knows its role:
-- Claude: Use for complex tasks, spawning agents, file operations
-- Gemini: Use for research, web searches, exploration
-- OpenAI: Use for analysis, code review, high-level reasoning
-
-Update this file when switching between tools to maintain sync.
+System is ready for production testing. Next session:
+- Run full end-to-end test with all 3 tools
+- Monitor for any issues
+- Consider adding `/workspace` command for session management
 
 ## Sync Protocol
 1. **Start session**: Read this file first

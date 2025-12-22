@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 cd /d "%~dp0..\.."
 
 :: Load .env if exists
@@ -8,9 +9,20 @@ if exist ".env" (
     )
 )
 
+:: Read the task
+set "TASK="
+if exist "config\tasks\openai.txt" (
+    set /p TASK=<"config\tasks\openai.txt"
+)
+
 echo.
-echo Task:
-type config\tasks\openai.txt
+echo Task: !TASK!
 echo.
 echo ----------------------------------------
-codex
+
+:: Launch codex with the task as argument
+if defined TASK (
+    codex "!TASK!"
+) else (
+    codex
+)

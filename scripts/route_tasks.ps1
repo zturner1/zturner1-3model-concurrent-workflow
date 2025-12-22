@@ -70,21 +70,79 @@ foreach ($sentence in $sentences) {
     }
 }
 
-# Write task files and show routing
+# Create session workspace
+$sessionId = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+$workspaceDir = "workspace\$sessionId"
+if (-not (Test-Path $workspaceDir)) {
+    New-Item -ItemType Directory -Path $workspaceDir -Force | Out-Null
+}
+
+# Write session info
+$sessionInfo = @{
+    id = $sessionId
+    started = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    original_input = $input
+    tasks = @{}
+}
+
+# Use UTF8 without BOM
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+
+# Write task files with collaboration context
 $activeTools = @()
 
 foreach ($tool in $tasks.Keys) {
     if ($tasks[$tool].Count -gt 0) {
+        $taskContent = $tasks[$tool] -join "`n"
+        $sessionInfo.tasks[$tool] = $taskContent
+
+        # Build collaboration prompt
+        $otherTools = @()
+        foreach ($otherTool in $tasks.Keys) {
+            if ($otherTool -ne $tool -and $tasks[$otherTool].Count -gt 0) {
+                $otherTools += "$otherTool is working on: $($tasks[$otherTool] -join '; ')"
+            }
+        }
+
+        $collabContext = ""
+        if ($otherTools.Count -gt 0) {
+            $collabContext = @"
+
+---
+COLLABORATION CONTEXT:
+You are part of a 3-agent team working simultaneously.
+$($otherTools -join "`n")
+
+SHARED WORKSPACE: $workspaceDir
+- Write your outputs to this folder
+- Check this folder for outputs from other agents
+- Coordinate by reading/writing to shared files
+---
+
+"@
+        }
+
+        $fullTask = $taskContent + $collabContext
+
         $taskFile = "config\tasks\$tool.txt"
-        $tasks[$tool] -join "`n" | Set-Content $taskFile -Encoding UTF8
+        [System.IO.File]::WriteAllText($taskFile, $fullTask, $utf8NoBom)
+
         Write-Host "    $tool -> $($tasks[$tool] -join '; ')"
         $activeTools += $tool
     }
 }
 
+# Write session manifest
+$manifestPath = "$workspaceDir\_session.json"
+$sessionInfo | ConvertTo-Json -Depth 3 | Set-Content $manifestPath -Encoding UTF8
+
 # Write active tools list
 if ($activeTools.Count -gt 0) {
-    $activeTools -join ',' | Set-Content 'config\tasks\_active.txt' -Encoding UTF8
+    $content = $activeTools -join ','
+    [System.IO.File]::WriteAllText('config\tasks\_active.txt', $content, $utf8NoBom)
+
+    # Also save workspace path for run.bat
+    [System.IO.File]::WriteAllText('config\tasks\_workspace.txt', $workspaceDir, $utf8NoBom)
 } else {
     Write-Host "    No tasks to route"
 }
