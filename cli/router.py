@@ -4,6 +4,7 @@ import re
 from dataclasses import dataclass
 from typing import List, Tuple, Optional
 from .config import get_config
+from .errors import NoAvailableToolError, RoutingError
 
 
 @dataclass
@@ -12,6 +13,8 @@ class Route:
     tool: str
     task: str
     tool_display_name: str
+    matched_keyword: Optional[str] = None
+    matched_role: Optional[str] = None
 
 
 def split_sentences(text: str) -> List[str]:
@@ -61,18 +64,29 @@ def find_keyword_match(sentence: str, keywords: List[str]) -> Optional[str]:
     return None
 
 
-def route_sentence(sentence: str) -> Route:
+def route_sentence(sentence: str, strict: bool = False) -> Route:
     """Route a single sentence to the appropriate tool.
 
     Uses enhanced keyword matching that:
     1. Prioritizes first-word matches
     2. Falls back to matching anywhere in the sentence
     3. Supports multi-word phrases
+
+    Args:
+        sentence: The sentence to route
+        strict: If True, raise NoAvailableToolError when no tools available
+
+    Returns:
+        Route with tool assignment
+
+    Raises:
+        NoAvailableToolError: If strict=True and no tools are available
     """
     config = get_config()
 
     matched_tool = None
     matched_role = None
+    matched_keyword = None
 
     # Check each role for keyword match
     for role_name, role in config.roles.items():
@@ -80,6 +94,7 @@ def route_sentence(sentence: str) -> Route:
         if match:
             # Found a matching role
             matched_role = role_name
+            matched_keyword = match
             primary = role.primary
             if config.is_tool_available(primary):
                 matched_tool = primary
@@ -91,22 +106,32 @@ def route_sentence(sentence: str) -> Route:
                         break
             break
 
-    # Default to claude if no match
+    # Default fallback chain if no keyword match or matched tool unavailable
     if matched_tool is None:
-        if config.is_tool_available("claude"):
-            matched_tool = "claude"
-        elif config.is_tool_available("openai"):
-            matched_tool = "openai"
-        elif config.is_tool_available("gemini"):
-            matched_tool = "gemini"
-        else:
-            matched_tool = "claude"  # Last resort
+        default_chain = ["claude", "openai", "gemini"]
+        for tool in default_chain:
+            if config.is_tool_available(tool):
+                matched_tool = tool
+                break
+
+    # Handle case where no tools are available
+    if matched_tool is None:
+        if strict:
+            raise NoAvailableToolError()
+        # Last resort - use claude even if not authenticated
+        matched_tool = "claude"
 
     # Get display name
     tool_display = config.tools.get(matched_tool)
     display_name = tool_display.name if tool_display else matched_tool.title()
 
-    return Route(tool=matched_tool, task=sentence, tool_display_name=display_name)
+    return Route(
+        tool=matched_tool,
+        task=sentence,
+        tool_display_name=display_name,
+        matched_keyword=matched_keyword,
+        matched_role=matched_role
+    )
 
 
 def route_input(text: str) -> List[Route]:
