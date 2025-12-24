@@ -13,7 +13,8 @@ Runtime configuration for the Terminal AI Workflow system.
 Defines routing keywords and tool configuration:
 - `roles` - Keyword-to-tool mapping (research, analysis, deep_work)
 - `tools` - Tool definitions (claude, gemini, openai)
-- `auth_status` - Tool availability flags
+- `auth_status` - Tool availability flags (`true`, `false`, or `auto`)
+- `tools[].args` - Optional list of CLI args (e.g., `["-p"]`)
 
 ## tasks/
 

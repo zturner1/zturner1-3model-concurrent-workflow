@@ -88,11 +88,12 @@ def get_tool_status(tool_id: str) -> ToolStatus:
     # Check if installed
     installed, version_or_error = check_tool_installed(command)
 
-    # Check auth status from config
-    authenticated = config.is_tool_available(tool_id)
+    # Check auth status from config/env
+    auth_status = config.get_effective_auth_status(tool_id)
+    authenticated = auth_status is True
 
-    # Available = installed AND authenticated
-    available = installed and authenticated
+    # Available = installed AND not explicitly unauthenticated
+    available = installed and (auth_status is not False)
 
     return ToolStatus(
         name=name,

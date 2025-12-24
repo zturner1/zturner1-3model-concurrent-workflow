@@ -24,24 +24,27 @@
       "name": "Claude Code",
       "command": "claude",
       "context_file": "CLAUDE.md",
-      "role": "Builder & Architect"
+      "role": "Builder & Architect",
+      "args": ["-p"]
     },
     "gemini": {
       "name": "Gemini CLI",
       "command": "gemini",
       "context_file": "GEMINI.md",
-      "role": "Scout & Researcher"
+      "role": "Scout & Researcher",
+      "args": ["-p"]
     },
     "openai": {
       "name": "OpenAI Codex",
       "command": "codex",
       "context_file": "OPENAI.md",
-      "role": "Auditor"
+      "role": "Auditor",
+      "args": []
     }
   },
   "auth_status": {
-    "claude": true,
-    "gemini": true,
-    "openai": true
+    "claude": "auto",
+    "gemini": "auto",
+    "openai": "auto"
   }
 }

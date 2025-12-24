@@ -151,7 +151,9 @@ def show_status(tools_status: dict):
     table.add_column("Status")
 
     for tool, info in tools_status.items():
-        status = "[green]Available[/green]" if info["available"] else "[red]Unavailable[/red]"
+        status = info.get("status")
+        if status is None:
+            status = "[green]Available[/green]" if info["available"] else "[red]Unavailable[/red]"
         table.add_row(info["name"], info["command"], status)
 
     console.print(table)

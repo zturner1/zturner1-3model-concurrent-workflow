@@ -1,6 +1,6 @@
 # AI CLI Command Reference
 
-This cheat sheet summarizes common CLI commands for Google Gemini CLI, OpenAI Codex CLI, and Anthropic Claude Code. It aims to match the latest available references; the Codex section is based on the local guide in this folder.
+This cheat sheet summarizes common CLI commands for Google Gemini CLI, OpenAI Codex CLI, and Anthropic Claude Code. It aims to match the latest available references; the Codex section is based on `openai_cli_deep_dive.md`.
 
 ---
 
@@ -142,7 +142,8 @@ Notes:
 
 - Gemini CLI docs: https://google-gemini.github.io/gemini-cli/docs/cli/
 - Gemini CLI commands: https://google-gemini.github.io/gemini-cli/docs/cli/commands.html
-- OpenAI Codex CLI guide (local): OpenAI_Codex_CLI_Guide.docx
+- Gemini CLI guide (local): gemini_cli_deep_dive.md
+- OpenAI Codex CLI guide (local): openai_cli_deep_dive.md
 - Claude Code CLI reference: https://code.claude.com/docs/en/cli-reference.md
 
 ---

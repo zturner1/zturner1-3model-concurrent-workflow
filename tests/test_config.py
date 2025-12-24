@@ -25,6 +25,7 @@ class TestToolConfig:
         assert config.command == "test-cmd"
         assert config.context_file == "TEST.md"
         assert config.role == ""  # Default value
+        assert config.args == []
 
     def test_tool_config_with_role(self):
         """Test ToolConfig with optional role field."""
@@ -91,6 +92,7 @@ class TestConfigLoad:
         assert isinstance(claude_tool, ToolConfig)
         assert claude_tool.name == "Claude Code"
         assert claude_tool.command == "claude"
+        assert claude_tool.args == ["-p"]
 
     def test_load_auth_status(self, temp_config_file):
         """Test that auth_status is properly loaded."""

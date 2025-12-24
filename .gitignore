@@ -28,6 +28,9 @@ config/tasks/
 # Auto-generated index cache
 config/knowledge_index.json
 
+# Runtime logs (keep logs/README.md tracked)
+logs/*.log
+
 # Editor files
 *.swp
 .vscode/

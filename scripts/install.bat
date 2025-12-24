@@ -217,7 +217,7 @@ if !HAS_OPENAI_KEY!==1 (
         :: Also set for current session
         set "OPENAI_API_KEY=!OPENAI_KEY!"
         :: Update auth_status in config
-        powershell -Command "(Get-Content 'config\role_config.json') -replace '\"openai\": false', '\"openai\": true' | Set-Content 'config\role_config.json'" >nul 2>&1
+        powershell -Command "(Get-Content 'config\role_config.json') -replace '\"openai\": (false|\"auto\")', '\"openai\": true' | Set-Content 'config\role_config.json'" >nul 2>&1
     ) else (
         echo   Skipped.
     )
@@ -237,7 +237,7 @@ if /i "!DO_CLAUDE!"=="Y" (
     call claude
     echo   Claude authentication complete.
     :: Update auth_status in config
-    powershell -Command "(Get-Content 'config\role_config.json') -replace '\"claude\": false', '\"claude\": true' | Set-Content 'config\role_config.json'" >nul 2>&1
+    powershell -Command "(Get-Content 'config\role_config.json') -replace '\"claude\": (false|\"auto\")', '\"claude\": true' | Set-Content 'config\role_config.json'" >nul 2>&1
 )
 
 :: Gemini CLI
@@ -254,7 +254,7 @@ if /i "!DO_GEMINI!"=="Y" (
     call gemini
     echo   Gemini authentication complete.
     :: Update auth_status in config
-    powershell -Command "(Get-Content 'config\role_config.json') -replace '\"gemini\": false', '\"gemini\": true' | Set-Content 'config\role_config.json'" >nul 2>&1
+    powershell -Command "(Get-Content 'config\role_config.json') -replace '\"gemini\": (false|\"auto\")', '\"gemini\": true' | Set-Content 'config\role_config.json'" >nul 2>&1
 )
 
 :skip_auth
@@ -263,6 +263,6 @@ echo ========================================
 echo  Setup Complete!
 echo ========================================
 echo.
-echo   Run 'run.bat' to start working.
+echo   Run 'run_cli.bat' to start working.
 echo.
 pause

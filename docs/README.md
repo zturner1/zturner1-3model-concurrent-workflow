@@ -14,8 +14,10 @@ Reference documentation integrated into the CLI:
 
 - `AI_CLI_Commands_Reference.md` - Command cheat sheet for all 3 CLIs
 - `claude_cli_deep_dive.md` - Claude Code features and workflows
-- `Workflow_Strategy.md` - 3-model architecture guide
-- `*.docx` - Additional Word documents
+- `gemini_cli_deep_dive.md` - Gemini CLI features and workflows
+- `openai_cli_deep_dive.md` - OpenAI Codex CLI features and workflows
+- `workflow_strategy.md` - 3-model architecture guide
+- `multi_agent_frameworks_comparison.md` - Coordination frameworks comparison
 
 Access via REPL:
 ```

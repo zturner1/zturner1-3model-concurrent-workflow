@@ -43,14 +43,45 @@ def get_tools_status() -> dict:
 
     for tool_name, tool_config in config.tools.items():
         command = tool_config.command
-        available = check_tool_available(command) and config.is_tool_available(tool_name)
+        installed = check_tool_available(command)
+        auth = config.get_effective_auth_status(tool_name)
+        if not installed:
+            status_text = "[red]Not installed[/red]"
+        elif auth is False:
+            status_text = "[red]Auth missing[/red]"
+        elif auth is True:
+            status_text = "[green]Available[/green]"
+        else:
+            status_text = "[yellow]Installed (auth unknown)[/yellow]"
+
+        available = installed and (auth is not False)
         status[tool_name] = {
             "name": tool_config.name,
             "command": command,
-            "available": available
+            "installed": installed,
+            "auth": auth,
+            "available": available,
+            "status": status_text
         }
 
     return status
+
+
+def build_tool_command(route: Route) -> list:
+    """Build a tool command with args and task."""
+    config = get_config()
+    tool_config = config.tools.get(route.tool)
+    if tool_config is None:
+        return [route.tool, route.task]
+
+    command = tool_config.command
+    args = list(tool_config.args)
+
+    if any("{task}" in arg for arg in args):
+        args = [arg.replace("{task}", route.task) for arg in args]
+        return [command] + args
+
+    return [command] + args + [route.task]
 
 
 def execute_tool_streaming(
@@ -78,7 +109,7 @@ def execute_tool_streaming(
 
     try:
         process = subprocess.Popen(
-            [command, route.task],
+            build_tool_command(route),
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
@@ -138,7 +169,7 @@ def execute_tool_sync(route: Route, workspace: Path) -> ExecutionResult:
 
     try:
         result = subprocess.run(
-            [command, route.task],
+            build_tool_command(route),
             capture_output=True,
             text=True,
             timeout=300  # 5 minute timeout
