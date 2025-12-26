@@ -18,11 +18,41 @@ class Route:
 
 
 def split_sentences(text: str) -> List[str]:
-    """Split input text into sentences."""
-    # Split by sentence-ending punctuation
-    sentences = re.split(r'[.!?]+', text)
-    # Clean up and filter empty strings
-    return [s.strip() for s in sentences if s.strip()]
+    """Split input text into sentences.
+
+    Handles file extensions (e.g., .json, .py) by not splitting on them.
+    Only splits on sentence-ending punctuation followed by space and capital letter,
+    or on ! and ? which are more reliable sentence boundaries.
+    """
+    # First, protect file extensions by temporarily replacing them
+    # Common extensions that shouldn't trigger sentence splits
+    extensions = ['.json', '.py', '.js', '.ts', '.md', '.txt', '.yaml', '.yml',
+                  '.toml', '.xml', '.html', '.css', '.sh', '.bat', '.exe', '.dll']
+
+    protected = text
+    placeholders = {}
+    for i, ext in enumerate(extensions):
+        placeholder = f"__EXT{i}__"
+        if ext in protected.lower():
+            # Case-insensitive replacement while preserving original case
+            pattern = re.compile(re.escape(ext), re.IGNORECASE)
+            protected = pattern.sub(placeholder, protected)
+            placeholders[placeholder] = ext
+
+    # Split on sentence boundaries: period/!/? followed by space and capital letter, or end of string
+    # Also split on ! and ? which are clear sentence boundaries
+    sentences = re.split(r'(?<=[.!?])\s+(?=[A-Z])|(?<=[!?])\s+', protected)
+
+    # Restore file extensions
+    result = []
+    for s in sentences:
+        restored = s
+        for placeholder, ext in placeholders.items():
+            restored = restored.replace(placeholder, ext)
+        if restored.strip():
+            result.append(restored.strip())
+
+    return result if result else [text.strip()]
 
 
 def get_first_word(sentence: str) -> str:

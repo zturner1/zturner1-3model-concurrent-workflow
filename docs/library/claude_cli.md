@@ -1,17 +1,44 @@
 # Claude Code CLI: Deep Dive & Best Practices
 
 ## Overview
+
 Claude Code CLI (`claude`) is an advanced AI assistant designed to live in your terminal. It acts not just as a chatbot, but as an agentic pair programmer capable of editing files, running shell commands, and managing complex coding tasks.
+
+**Target Audience:** Developers, System Architects, and "Power Users" who prefer terminal-centric workflows.
 
 ## 1. CLI Usage & Arguments
 The CLI can be invoked in several modes.
 
 ### Basic Commands
-*   `claude`: Starts an interactive REPL session.
-*   `claude "query"`: Starts a session with an immediate query.
-*   `claude -c` / `claude --continue`: Resumes the last session.
-*   `claude -r <id>` / `claude --resume <id>`: Resumes a specific session.
-*   `claude -p "text"`: Pipes text into the context (e.g., `cat logs.txt | claude -p "Analyze"`).
+*   **Interactive Mode:**
+    ```bash
+    claude
+    ```
+    Starts a persistent chat session.
+*   **One-Shot Query:**
+    ```bash
+    claude "query"
+    ```
+    Runs a single request without entering a session.
+*   **Resume Last Session:**
+    ```bash
+    claude -c
+    # or
+    claude --continue
+    ```
+    Resumes the last session.
+*   **Resume Specific Session:**
+    ```bash
+    claude -r <id>
+    # or
+    claude --resume <id>
+    ```
+    Resumes a specific session by ID.
+*   **Piped Input:**
+    ```bash
+    cat logs.txt | claude -p "Analyze"
+    ```
+    Pipes text into the context.
 
 ### Advanced Flags
 *   `--print`: Prints the response to stdout (useful for piping output to other tools).
@@ -42,11 +69,20 @@ Slash commands control the environment, context, and tool behavior.
 | `/sandbox` | Enables/disables sandboxed execution for safety. |
 | `/exit` | Exits the session. |
 
-## 3. Configuration & Context (`CLAUDE.md`)
-The `CLAUDE.md` file is the brain of your project. It persists across sessions.
+## 3. Configuration & Context
+Configuration and context are captured in local files that persist across sessions.
+
+### Primary Config File
+*   **File**: `CLAUDE.md`.
 *   **Location**: Project root (`./CLAUDE.md`) or global (`~/.claude/CLAUDE.md`).
-*   **Purpose**: Stores architectural patterns, coding standards, build instructions, and common commands.
+*   **Role**: Stores architectural patterns, coding standards, build instructions, and common commands.
 *   **Best Practice**: Keep it concise. Use it to "onboard" Claude to your specific codebase conventions.
+
+### Supporting Files
+*   *None noted in this document.*
+
+### Authentication
+*   *Not covered in this document.*
 
 ## 4. Best Practices for "Best Use"
 
@@ -56,21 +92,18 @@ The `CLAUDE.md` file is the brain of your project. It persists across sessions.
 *   **Leverage MCP**: Connect to database schemas or external docs via MCP instead of pasting them.
 
 ### B. Workflow Patterns
-1.  **TDD (Test Driven Development)**:
-    *   Ask Claude to write the *test* first.
-    *   Run the test (it fails).
-    *   Ask Claude to write the code to pass the test.
-    *   This prevents "hallucinated" code that looks right but doesn't work.
-
+1.  **TDD (Test-Driven Development)**:
+    *   **Scenario:** Implementing a new feature with unclear edge cases.
+    *   **Action:** Ask for tests first, then implement to pass them.
+    *   **Command:** `claude -p "Write tests for X, then propose the minimal code to pass them."`
 2.  **The "Reviewer" Role**:
-    *   Pipe `git diff` into Claude: `git diff | claude -p "Review these changes for bugs"`
-    *   Use `/review` before committing complex changes.
-
+    *   **Scenario:** Reviewing a set of changes before a commit.
+    *   **Action:** Pipe the diff for a bug-focused review.
+    *   **Command:** `git diff | claude -p "Review these changes for bugs"`
 3.  **Complex Refactoring**:
-    *   Don't do it in one turn.
-    *   Step 1: "Analyze the dependency chain of X."
-    *   Step 2: "Propose a refactor plan."
-    *   Step 3: "Execute step 1 of the plan."
+    *   **Scenario:** Refactoring a large or tightly coupled module.
+    *   **Action:** Split into analysis, plan, and execution steps.
+    *   **Command:** `claude -p "Analyze dependencies for X, propose a plan, then execute step 1."`
 
 ### C. Automation & Scripting
 *   **Custom Commands**: Create markdown files in `.claude/commands/` to define custom slash commands (e.g., `/deploy` that runs a specific script).

@@ -1,5 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
+title Claude Code - Terminal AI Workflow
 
 :: Navigate to project root (two levels up from this script)
 set "PROJECT_ROOT=%~dp0..\.."
@@ -12,13 +13,22 @@ if exist "config\tasks\claude.txt" (
 )
 
 echo.
-echo Task: !TASK!
+echo  ========================================
+echo   Claude Code
+echo  ========================================
 echo.
-echo ----------------------------------------
-
-:: Launch claude with the task as argument
 if defined TASK (
-    claude "!TASK!"
+    echo  Task: !TASK!
+    echo.
+    echo  ----------------------------------------
+    echo.
+    :: Use --print mode for non-interactive output with auto-approval
+    claude --print --dangerously-skip-permissions "!TASK!"
 ) else (
+    echo  No task assigned. Starting interactive mode...
+    echo.
     claude
 )
+
+popd
+endlocal

@@ -1,28 +1,54 @@
 @echo off
 :: ========================================
-:: Terminal AI Workflow - Python CLI
+:: Terminal AI Workflow - Sequential CLI
 :: ========================================
-:: Interactive REPL with rich output
-:: For GUI mode, use run_gui.bat instead
+:: Runs tools one at a time in CLI mode
+:: For concurrent mode, use run.bat instead
 
-setlocal
+setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
-set "PYTHON_EXE="
-where python >nul 2>nul && set "PYTHON_EXE=python"
-if not defined PYTHON_EXE (
-    where py >nul 2>nul && set "PYTHON_EXE=py"
+echo.
+echo  ========================================
+echo   Terminal AI Workflow - CLI Mode
+echo  ========================================
+echo.
+
+:: Check if input provided as argument
+if not "%~1"=="" (
+    set "INPUT=%*"
+    goto :process
 )
 
-if not defined PYTHON_EXE (
-    echo ERROR: Python not found. Install Python 3 and ensure python or py is in PATH.
+:: Prompt for input
+echo  Enter your task(s). Use periods to separate multiple tasks.
+echo.
+set /p INPUT="  > "
+
+if "!INPUT!"=="" (
+    echo  No input provided. Exiting.
     exit /b 1
 )
 
-if /i "%PYTHON_EXE%"=="py" (
-    py -3 "%~dp0scripts\run_cli.py" %*
-) else (
-    python "%~dp0scripts\run_cli.py" %*
+:process
+:: Write input to temp file
+echo !INPUT!> "config\tasks\_input.txt"
+
+:: Route tasks
+echo.
+echo  Routing tasks...
+powershell -ExecutionPolicy Bypass -File "scripts\route_tasks.ps1"
+if errorlevel 1 (
+    echo  Error routing tasks.
+    exit /b 1
 )
 
+:: Run sequentially
+echo.
+powershell -ExecutionPolicy Bypass -File "scripts\run_cli.ps1"
+
+echo.
+echo  ========================================
+echo   Complete
+echo  ========================================
 endlocal

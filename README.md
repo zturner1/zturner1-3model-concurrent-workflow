@@ -70,6 +70,7 @@ project/
 | CLI mode (`run_cli.bat`) | OK | Sequential in single terminal |
 | Smart task routing | OK | Routes by first word of sentence |
 | Session workspaces | OK | Timestamped folders in `workspace/` |
+| Input validation | OK | Blocks dangerous characters |
 | **Tools** | | |
 | Claude Code integration | OK | Deep work, file operations |
 | Gemini CLI integration | OK | Research, web search |
@@ -83,11 +84,15 @@ project/
 | Log rotation (100MB) | OK | Keeps 5 backup files |
 | Debug mode | OK | `run_cli.bat --debug` |
 | Validation script | OK | `scripts/test_setup.ps1` |
+| **Session Management** | | |
+| `/summary` command | OK | View last session outputs |
+| `/cleanup` command | OK | Remove workspaces >7 days old |
+| Timeout handling | OK | 10 min default, configurable |
+| Execution summary | OK | Shows per-tool status after run |
 | **Collaboration** | | |
 | Shared context sync | OK | `shared-context.md` |
 | Agent collaboration context | OK | Agents know each other's tasks |
 | **Planned** | | |
-| `/workspace` command | Planned | Session management |
 | Linux/macOS support | Planned | Currently Windows only |
 | Custom routing rules UI | Planned | Edit rules via command |
 
@@ -158,7 +163,18 @@ run_cli.bat    # Sequential mode (1 terminal)
  Type your task(s) and press Enter.
  Multiple sentences are split and routed to appropriate tools.
 
- Commands: /help, /status, /tasks, /exit
+ Commands:
+   /help     - Show available commands
+   /status   - Check tool authentication status
+   /config   - Open role configuration
+   /history  - View recent tasks
+   /log      - View execution log
+   /summary  - View last session outputs
+   /cleanup  - Remove old workspaces (>7 days)
+   /clear    - Clear screen
+   /test     - Run system validation
+   /exit     - Exit the workflow
+
 ========================================
 
 > Research AI trends. Build a summary. Review the draft.

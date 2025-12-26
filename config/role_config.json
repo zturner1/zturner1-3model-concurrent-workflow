@@ -39,7 +39,7 @@
       "command": "codex",
       "context_file": "OPENAI.md",
       "role": "Auditor",
-      "args": []
+      "args": ["exec"]
     }
   },
   "auth_status": {

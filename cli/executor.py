@@ -67,21 +67,39 @@ def get_tools_status() -> dict:
     return status
 
 
-def build_tool_command(route: Route) -> list:
-    """Build a tool command with args and task."""
+def build_tool_command(route: Route) -> str:
+    """Build a tool command as a shell-escaped string.
+
+    Returns a string (not list) for proper shell=True handling on Windows.
+    """
+    import shlex
+
     config = get_config()
     tool_config = config.tools.get(route.tool)
     if tool_config is None:
-        return [route.tool, route.task]
+        return f'{route.tool} "{route.task}"'
 
     command = tool_config.command
     args = list(tool_config.args)
 
     if any("{task}" in arg for arg in args):
         args = [arg.replace("{task}", route.task) for arg in args]
-        return [command] + args
+        parts = [command] + args
+    else:
+        parts = [command] + args + [route.task]
 
-    return [command] + args + [route.task]
+    # Build properly quoted command string for shell execution
+    # Quote any argument containing spaces
+    quoted_parts = []
+    for part in parts:
+        if ' ' in part or '"' in part:
+            # Escape internal quotes and wrap in quotes
+            escaped = part.replace('"', '\\"')
+            quoted_parts.append(f'"{escaped}"')
+        else:
+            quoted_parts.append(part)
+
+    return ' '.join(quoted_parts)
 
 
 def execute_tool_streaming(
@@ -115,7 +133,8 @@ def execute_tool_streaming(
             text=True,
             bufsize=1,
             encoding='utf-8',
-            errors='replace'
+            errors='replace',
+            shell=True  # Required for Windows .CMD files (npm-installed CLIs)
         )
 
         # Stream output line by line
@@ -172,9 +191,12 @@ def execute_tool_sync(route: Route, workspace: Path) -> ExecutionResult:
             build_tool_command(route),
             capture_output=True,
             text=True,
-            timeout=300  # 5 minute timeout
+            timeout=300,  # 5 minute timeout
+            shell=True,  # Required for Windows .CMD files (npm-installed CLIs)
+            encoding='utf-8',
+            errors='replace'
         )
-        output = result.stdout + result.stderr
+        output = (result.stdout or '') + (result.stderr or '')
         exit_code = result.returncode
     except subprocess.TimeoutExpired:
         output = "Error: Command timed out after 5 minutes"

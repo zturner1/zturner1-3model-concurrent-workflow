@@ -1,5 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
+title OpenAI Codex - Terminal AI Workflow
 
 :: Navigate to project root (two levels up from this script)
 set "PROJECT_ROOT=%~dp0..\.."
@@ -19,13 +20,22 @@ if exist "config\tasks\openai.txt" (
 )
 
 echo.
-echo Task: !TASK!
+echo  ========================================
+echo   OpenAI Codex
+echo  ========================================
 echo.
-echo ----------------------------------------
-
-:: Launch codex with the task as argument
 if defined TASK (
-    codex "!TASK!"
+    echo  Task: !TASK!
+    echo.
+    echo  ----------------------------------------
+    echo.
+    :: Use 'exec --full-auto' for non-interactive mode with auto-approval
+    codex exec --full-auto --skip-git-repo-check "!TASK!"
 ) else (
+    echo  No task assigned. Starting interactive mode...
+    echo.
     codex
 )
+
+popd
+endlocal
